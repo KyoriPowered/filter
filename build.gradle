@@ -28,6 +28,12 @@ repositories {
   mavenCentral()
 }
 
+dependencies {
+  compile 'org.checkerframework:checker-qual:2.5.5'
+  testCompile 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+  testCompile 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+}
+
 task javadocJar(type: Jar) {
   classifier 'javadoc'
   from javadoc
