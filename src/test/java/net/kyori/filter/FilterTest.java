@@ -23,37 +23,23 @@
  */
 package net.kyori.filter;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.junit.jupiter.api.Test;
 
-/**
- * A filter.
- */
-public interface Filter {
-  /**
-   * Query this filter for a response.
-   *
-   * @param query the query
-   * @return the response
-   */
-  @NonNull FilterResponse query(final @NonNull FilterQuery query);
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-  /**
-   * Query this filter and return {@code true} if {@link FilterResponse#ALLOW allowed} and {@code false} otherwise.
-   *
-   * @param query the query
-   * @return {@code true} if allowed, {@code false} otherwise
-   */
-  default boolean allows(final @NonNull FilterQuery query) {
-    return this.query(query) == FilterResponse.ALLOW;
+class FilterTest {
+  @Test
+  void testAllows() {
+    final TestFilter filter = new TestFilter(69);
+    assertTrue(filter.allows((TestQuery) () -> 69));
+    assertFalse(filter.allows((TestQuery) () -> 42));
   }
 
-  /**
-   * Query this filter and return {@code true} if {@link FilterResponse#DENY denied} and {@code false} otherwise.
-   *
-   * @param query the query
-   * @return {@code true} if denied, {@code false} otherwise
-   */
-  default boolean denies(final @NonNull FilterQuery query) {
-    return this.query(query) == FilterResponse.DENY;
+  @Test
+  void testDenies() {
+    final TestFilter filter = new TestFilter(69);
+    assertFalse(filter.denies((TestQuery) () -> 69));
+    assertTrue(filter.denies((TestQuery) () -> 42));
   }
 }
