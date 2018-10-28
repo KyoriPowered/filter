@@ -21,27 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package net.kyori.filter.impl;
+package net.kyori.filter;
 
-import net.kyori.filter.FilterResponse;
-import net.kyori.filter.TestFilter;
-import net.kyori.filter.TestQuery;
+import net.kyori.filter.data.TestFilter;
+import net.kyori.filter.data.TestQuery1;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class NotFilterTest {
+class AllFilterTest {
   @Test
-  void testNot() {
-    final TestFilter filter = new TestFilter(69);
-    assertEquals(FilterResponse.ALLOW, filter.query((TestQuery) () -> 69));
-    assertEquals(FilterResponse.DENY, new NotFilter(filter).query((TestQuery) () -> 69));
-  }
-
-  @Test
-  void testNotNot() {
-    final TestFilter filter = new TestFilter(69);
-    assertEquals(FilterResponse.ALLOW, filter.query((TestQuery) () -> 69));
-    assertEquals(FilterResponse.ALLOW, new NotFilter(new NotFilter(filter)).query((TestQuery) () -> 69));
+  void test() {
+    assertTrue(Filters.all(new TestFilter(10), new TestFilter(10)).allows(TestQuery1.of(10)));
+    assertTrue(Filters.all(new TestFilter(10), new TestFilter(20)).denies(TestQuery1.of(10)));
   }
 }

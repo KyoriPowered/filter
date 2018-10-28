@@ -21,28 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package net.kyori.filter.impl;
+package net.kyori.filter;
 
-import net.kyori.filter.Filter;
-import net.kyori.filter.FilterQuery;
-import net.kyori.filter.FilterResponse;
-import net.kyori.filter.FilterResponseResolver;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import net.kyori.filter.data.TestFilter;
+import net.kyori.filter.data.TestQuery1;
+import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- * A filter that responds with {@link FilterResponse#ALLOW} if all of its children also respond with {@link FilterResponse#ALLOW}.
- */
-public final class AllFilter extends MultipleWrappedFilter {
-  private static final FilterResponseResolver RESOLVER = new FilterResponseResolver(FilterResponse.DENY, FilterResponse.ALLOW);
-
-  public AllFilter(final @NonNull List<Filter> filters) {
-    super(filters);
-  }
-
-  @Override
-  public @NonNull FilterResponse query(final @NonNull FilterQuery query) {
-    return RESOLVER.resolve(this.filters, query);
+class NotFilterTest {
+  @Test
+  void test() {
+    final Filter filter = Filters.not(new TestFilter(20));
+    assertTrue(filter.allows(TestQuery1.of(10)));
+    assertTrue(filter.allows(TestQuery1.of(15)));
+    assertTrue(filter.denies(TestQuery1.of(20)));
   }
 }

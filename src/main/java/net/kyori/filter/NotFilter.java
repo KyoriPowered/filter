@@ -21,22 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package net.kyori.filter.impl;
+package net.kyori.filter;
 
-import net.kyori.filter.Filter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import java.util.List;
+/**
+ * A filter that returns the inverse response.
+ */
+public final class NotFilter implements Filter {
+  private final Filter filter;
 
-public abstract class MultipleWrappedFilter implements Filter {
-  protected final @NonNull List<Filter> filters;
+  public NotFilter(final @NonNull Filter filter) {
+    this.filter = filter;
+  }
 
-  protected MultipleWrappedFilter(final @NonNull List<Filter> filters) {
-    this.filters = filters;
+  @Override
+  public @NonNull FilterResponse query(final @NonNull FilterQuery query) {
+    return this.filter.query(query).inverse();
   }
 
   @Override
   public String toString() {
-    return this.getClass().getSimpleName() + '{' + this.filters + '}';
+    return "NotFilter{" + this.filter + '}';
   }
 }

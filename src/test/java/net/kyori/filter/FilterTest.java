@@ -23,23 +23,28 @@
  */
 package net.kyori.filter;
 
+import net.kyori.filter.data.TestFilter;
+import net.kyori.filter.data.TestQuery1;
+import net.kyori.filter.data.TestQuery2;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FilterTest {
+  private static final TestFilter FILTER = new TestFilter(0);
+
   @Test
-  void testAllows() {
-    final TestFilter filter = new TestFilter(69);
-    assertTrue(filter.allows((TestQuery) () -> 69));
-    assertFalse(filter.allows((TestQuery) () -> 42));
+  void testQueryable() {
+    assertTrue(FILTER.queryable(TestQuery1.of(0)));
+    assertFalse(FILTER.queryable(TestQuery2.of()));
   }
 
   @Test
-  void testDenies() {
-    final TestFilter filter = new TestFilter(69);
-    assertFalse(filter.denies((TestQuery) () -> 69));
-    assertTrue(filter.denies((TestQuery) () -> 42));
+  void testQuery() {
+    assertEquals(FilterResponse.ALLOW, FILTER.query(TestQuery1.of(0)));
+    assertEquals(FilterResponse.ABSTAIN, FILTER.query(TestQuery2.of()));
+    assertEquals(FilterResponse.DENY, FILTER.query(TestQuery1.of(1)));
   }
 }

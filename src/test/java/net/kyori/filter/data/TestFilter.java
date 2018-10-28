@@ -21,33 +21,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package net.kyori.filter;
+package net.kyori.filter.data;
 
+import net.kyori.filter.FilterQuery;
+import net.kyori.filter.FilterResponse;
+import net.kyori.filter.TypedFilter;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import java.util.List;
+public class TestFilter implements TypedFilter<TestQuery1> {
+  private final int number;
 
-public class FilterResponseResolver {
-  // The quick response value is returned immediately if encountered while querying filters.
-  private final FilterResponse immediateResponse;
-  // The delayed response is the final response if it is encountered while querying filters and the quick response is not encountered.
-  private final FilterResponse delayedResponse;
-
-  public FilterResponseResolver(final @NonNull FilterResponse immediateResponse, final @NonNull FilterResponse delayedResponse) {
-    this.immediateResponse = immediateResponse;
-    this.delayedResponse = delayedResponse;
+  public TestFilter(final int number) {
+    this.number = number;
   }
 
-  public @NonNull FilterResponse resolve(final @NonNull List<Filter> filters, final @NonNull FilterQuery query) {
-    FilterResponse delayedResponse = FilterResponse.ABSTAIN;
-    for(final Filter filter : filters) {
-      final FilterResponse response = filter.query(query);
-      if(response == this.immediateResponse) {
-        return response;
-      } else if(response == this.delayedResponse) {
-        delayedResponse = response;
-      }
-    }
-    return delayedResponse;
+  @Override
+  public boolean queryable(final @NonNull FilterQuery query) {
+    return query instanceof TestQuery1;
+  }
+
+  @Override
+  public @NonNull FilterResponse typedQuery(final @NonNull TestQuery1 query) {
+    return FilterResponse.from(this.number == query.number());
   }
 }

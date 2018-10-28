@@ -23,6 +23,32 @@
  */
 package net.kyori.filter;
 
-public interface TestQuery extends FilterQuery {
-  int number();
+import org.checkerframework.checker.nullness.qual.NonNull;
+
+/**
+ * A filter that responds with {@link FilterResponse#ALLOW} if all of its children also respond with {@link FilterResponse#ALLOW}.
+ */
+public final class AllFilter implements Filter {
+  private final Iterable<? extends Filter> filters;
+
+  public AllFilter(final @NonNull Iterable<? extends Filter> filters) {
+    this.filters = filters;
+  }
+
+  @Override
+  public @NonNull FilterResponse query(final @NonNull FilterQuery query) {
+    FilterResponse response = FilterResponse.ABSTAIN;
+    for(final Filter filter : this.filters) {
+      switch(filter.query(query)) {
+        case DENY: return FilterResponse.DENY;
+        case ALLOW: response = FilterResponse.ALLOW;
+      }
+    }
+    return response;
+  }
+
+  @Override
+  public String toString() {
+    return "AllFilter{" + this.filters + '}';
+  }
 }

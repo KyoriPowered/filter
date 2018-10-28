@@ -21,24 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package net.kyori.filter;
+package net.kyori.filter.data;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
+import net.kyori.filter.FilterQuery;
 
-public class TestFilter implements TypedFilter<TestQuery> {
-  private final int number;
-
-  public TestFilter(final int number) {
-    this.number = number;
+public interface TestQuery1 extends FilterQuery {
+  static TestQuery1 of(final int number) {
+    return () -> number;
   }
 
-  @Override
-  public boolean queryable(final @NonNull FilterQuery query) {
-    return query instanceof TestQuery;
-  }
-
-  @Override
-  public @NonNull FilterResponse typedQuery(final @NonNull TestQuery query) {
-    return FilterResponse.from(this.number == query.number());
-  }
+  int number();
 }

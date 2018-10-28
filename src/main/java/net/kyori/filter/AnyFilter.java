@@ -21,23 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package net.kyori.filter.impl;
+package net.kyori.filter;
 
-import net.kyori.filter.Filter;
-import net.kyori.filter.FilterQuery;
-import net.kyori.filter.FilterResponse;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
- * A filter that returns the inverse response.
+ * A filter that responds with {@link FilterResponse#ALLOW} if any of its children respond with {@link FilterResponse#ALLOW}.
  */
-public final class NotFilter extends SingleWrappedFilter {
-  public NotFilter(final @NonNull Filter filter) {
-    super(filter);
+public final class AnyFilter implements Filter {
+  private final Iterable<? extends Filter> filters;
+
+  public AnyFilter(final @NonNull Iterable<? extends Filter> filters) {
+    this.filters = filters;
   }
 
   @Override
   public @NonNull FilterResponse query(final @NonNull FilterQuery query) {
-    return this.filter.query(query).inverse();
+    FilterResponse response = FilterResponse.ABSTAIN;
+    for(final Filter filter : this.filters) {
+      switch(filter.query(query)) {
+        case ALLOW: return FilterResponse.ALLOW;
+        case DENY: response = FilterResponse.DENY;
+      }
+    }
+    return response;
+  }
+
+  @Override
+  public String toString() {
+    return "AnyFilter{" + this.filters + '}';
   }
 }
