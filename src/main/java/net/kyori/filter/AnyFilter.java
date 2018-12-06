@@ -23,7 +23,10 @@
  */
 package net.kyori.filter;
 
+import net.kyori.lambda.examine.ExaminableProperty;
 import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.util.stream.Stream;
 
 /**
  * A filter that responds with {@link FilterResponse#ALLOW} if any of its children respond with {@link FilterResponse#ALLOW}.
@@ -48,7 +51,7 @@ public final class AnyFilter implements Filter {
   }
 
   @Override
-  public String toString() {
-    return "AnyFilter{" + this.filters + '}';
+  public @NonNull Stream<? extends ExaminableProperty> examinableProperties() {
+    return Stream.of(ExaminableProperty.of("filters", this.filters));
   }
 }

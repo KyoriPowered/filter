@@ -23,38 +23,24 @@
  */
 package net.kyori.filter;
 
-import net.kyori.lambda.examine.Examinable;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import net.kyori.filter.data.TestQuery1;
+import org.junit.jupiter.api.Test;
 
-/**
- * A filter.
- */
-public interface Filter extends Examinable {
-  /**
-   * Query this filter for a response.
-   *
-   * @param query the query
-   * @return the response
-   */
-  @NonNull FilterResponse query(final @NonNull FilterQuery query);
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-  /**
-   * Query this filter and return {@code true} if {@link FilterResponse#ALLOW allowed} and {@code false} otherwise.
-   *
-   * @param query the query
-   * @return {@code true} if allowed, {@code false} otherwise
-   */
-  default boolean allows(final @NonNull FilterQuery query) {
-    return this.query(query) == FilterResponse.ALLOW;
+class StaticFilterTest {
+  @Test
+  void testAllow() {
+    assertEquals(FilterResponse.ALLOW, Filters.allow().query(TestQuery1.of(10)));
   }
 
-  /**
-   * Query this filter and return {@code true} if {@link FilterResponse#DENY denied} and {@code false} otherwise.
-   *
-   * @param query the query
-   * @return {@code true} if denied, {@code false} otherwise
-   */
-  default boolean denies(final @NonNull FilterQuery query) {
-    return this.query(query) == FilterResponse.DENY;
+  @Test
+  void testAbstain() {
+    assertEquals(FilterResponse.ABSTAIN, Filters.abstain().query(TestQuery1.of(10)));
+  }
+
+  @Test
+  void testDeny() {
+    assertEquals(FilterResponse.DENY, Filters.deny().query(TestQuery1.of(10)));
   }
 }

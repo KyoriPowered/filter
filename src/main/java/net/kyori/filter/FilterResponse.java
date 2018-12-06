@@ -35,16 +35,16 @@ public enum FilterResponse {
       return DENY;
     }
   },
-  DENY {
-    @Override
-    public @NonNull FilterResponse inverse() {
-      return ALLOW;
-    }
-  },
   ABSTAIN {
     @Override
     public @NonNull FilterResponse inverse() {
       return ABSTAIN;
+    }
+  },
+  DENY {
+    @Override
+    public @NonNull FilterResponse inverse() {
+      return ALLOW;
     }
   };
 

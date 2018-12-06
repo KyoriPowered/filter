@@ -80,4 +80,31 @@ public interface Filters {
   static @NonNull Filter not(final @NonNull Filter filter) {
     return new NotFilter(filter);
   }
+
+  /**
+   * Gets a filter that always responds with {@link FilterResponse#ALLOW}.
+   *
+   * @return a filter
+   */
+  static @NonNull Filter allow() {
+    return StaticFilter.ALLOW;
+  }
+
+  /**
+   * Gets a filter that always responds with {@link FilterResponse#ABSTAIN}.
+   *
+   * @return a filter
+   */
+  static @NonNull Filter abstain() {
+    return StaticFilter.ABSTAIN;
+  }
+
+  /**
+   * Gets a filter that always responds with {@link FilterResponse#DENY}.
+   *
+   * @return a filter
+   */
+  static @NonNull Filter deny() {
+    return StaticFilter.DENY;
+  }
 }

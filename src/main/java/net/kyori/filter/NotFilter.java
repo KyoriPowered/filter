@@ -23,7 +23,10 @@
  */
 package net.kyori.filter;
 
+import net.kyori.lambda.examine.ExaminableProperty;
 import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.util.stream.Stream;
 
 /**
  * A filter that returns the inverse response.
@@ -41,7 +44,7 @@ public final class NotFilter implements Filter {
   }
 
   @Override
-  public String toString() {
-    return "NotFilter{" + this.filter + '}';
+  public @NonNull Stream<? extends ExaminableProperty> examinableProperties() {
+    return Stream.of(ExaminableProperty.of("filter", this.filter));
   }
 }

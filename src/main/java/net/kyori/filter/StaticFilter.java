@@ -23,38 +23,40 @@
  */
 package net.kyori.filter;
 
-import net.kyori.lambda.examine.Examinable;
+import net.kyori.lambda.examine.ExaminableProperty;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-/**
- * A filter.
- */
-public interface Filter extends Examinable {
-  /**
-   * Query this filter for a response.
-   *
-   * @param query the query
-   * @return the response
-   */
-  @NonNull FilterResponse query(final @NonNull FilterQuery query);
+import java.util.stream.Stream;
 
+/**
+ * A filter that returns a static response.
+ */
+public final class StaticFilter implements Filter {
   /**
-   * Query this filter and return {@code true} if {@link FilterResponse#ALLOW allowed} and {@code false} otherwise.
-   *
-   * @param query the query
-   * @return {@code true} if allowed, {@code false} otherwise
+   * A filter that always returns with {@link FilterResponse#ALLOW}.
    */
-  default boolean allows(final @NonNull FilterQuery query) {
-    return this.query(query) == FilterResponse.ALLOW;
+  static final StaticFilter ALLOW = new StaticFilter(FilterResponse.ALLOW);
+  /**
+   * A filter that always returns with {@link FilterResponse#ABSTAIN}.
+   */
+  static final StaticFilter ABSTAIN = new StaticFilter(FilterResponse.ABSTAIN);
+  /**
+   * A filter that always returns with {@link FilterResponse#DENY}.
+   */
+  static final StaticFilter DENY = new StaticFilter(FilterResponse.DENY);
+  private final FilterResponse response;
+
+  public StaticFilter(final @NonNull FilterResponse response) {
+    this.response = response;
   }
 
-  /**
-   * Query this filter and return {@code true} if {@link FilterResponse#DENY denied} and {@code false} otherwise.
-   *
-   * @param query the query
-   * @return {@code true} if denied, {@code false} otherwise
-   */
-  default boolean denies(final @NonNull FilterQuery query) {
-    return this.query(query) == FilterResponse.DENY;
+  @Override
+  public @NonNull FilterResponse query(final @NonNull FilterQuery query) {
+    return this.response;
+  }
+
+  @Override
+  public @NonNull Stream<? extends ExaminableProperty> examinableProperties() {
+    return Stream.of(ExaminableProperty.of("response", this.response));
   }
 }
