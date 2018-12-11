@@ -37,7 +37,7 @@ public interface Filters {
    * @param filters the filters
    * @return an all filter
    */
-  static @NonNull Filter all(final @NonNull Filter... filters) {
+  static @NonNull AllFilter all(final @NonNull Filter... filters) {
     return all(Arrays.asList(filters));
   }
 
@@ -47,7 +47,7 @@ public interface Filters {
    * @param filters the filters
    * @return an all filter
    */
-  static @NonNull Filter all(final @NonNull Iterable<? extends Filter> filters) {
+  static @NonNull AllFilter all(final @NonNull Iterable<? extends Filter> filters) {
     return new AllFilter(filters);
   }
 
@@ -57,7 +57,7 @@ public interface Filters {
    * @param filters the filters
    * @return an any filter
    */
-  static @NonNull Filter any(final @NonNull Filter... filters) {
+  static @NonNull AnyFilter any(final @NonNull Filter... filters) {
     return any(Arrays.asList(filters));
   }
 
@@ -67,7 +67,7 @@ public interface Filters {
    * @param filters the filters
    * @return an any filter
    */
-  static @NonNull Filter any(final @NonNull Iterable<? extends Filter> filters) {
+  static @NonNull AnyFilter any(final @NonNull Iterable<? extends Filter> filters) {
     return new AnyFilter(filters);
   }
 
@@ -77,7 +77,7 @@ public interface Filters {
    * @param filter a filter
    * @return a not filter
    */
-  static @NonNull Filter not(final @NonNull Filter filter) {
+  static @NonNull NotFilter not(final @NonNull Filter filter) {
     return new NotFilter(filter);
   }
 
@@ -86,7 +86,7 @@ public interface Filters {
    *
    * @return a filter
    */
-  static @NonNull Filter allow() {
+  static @NonNull StaticFilter allow() {
     return StaticFilter.ALLOW;
   }
 
@@ -95,7 +95,7 @@ public interface Filters {
    *
    * @return a filter
    */
-  static @NonNull Filter abstain() {
+  static @NonNull StaticFilter abstain() {
     return StaticFilter.ABSTAIN;
   }
 
@@ -104,7 +104,7 @@ public interface Filters {
    *
    * @return a filter
    */
-  static @NonNull Filter deny() {
+  static @NonNull StaticFilter deny() {
     return StaticFilter.DENY;
   }
 }
