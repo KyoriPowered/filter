@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<filters>
+  <a>
+    <all>
+      <test>1024</test>
+      <test>1024</test>
+    </all>
+    <any>
+      <test>1024</test>
+      <test>2048</test>
+    </any>
+    <not>
+      <test>1024</test>
+    </not>
+    <always/>
+    <never/>
+  </a>
+
+  <b>
+    <all>
+      <test>1024</test>
+      <test>2048</test>
+    </all>
+    <not>
+      <not>
+        <test>1024</test>
+      </not>
+    </not>
+  </b>
+</filters>
