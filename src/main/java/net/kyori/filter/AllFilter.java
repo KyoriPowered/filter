@@ -23,6 +23,8 @@
  */
 package net.kyori.filter;
 
+import net.kyori.component.Component;
+import net.kyori.lambda.collection.MoreIterables;
 import net.kyori.lambda.examine.ExaminableProperty;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -48,6 +50,11 @@ public final class AllFilter implements Filter {
       }
     }
     return response;
+  }
+
+  @Override
+  public @NonNull Stream<? extends Component> dependencies() {
+    return MoreIterables.stream(this.filters);
   }
 
   @Override

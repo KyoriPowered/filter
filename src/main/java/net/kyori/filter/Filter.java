@@ -23,13 +23,14 @@
  */
 package net.kyori.filter;
 
+import net.kyori.component.Component;
 import net.kyori.lambda.examine.Examinable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * A filter.
  */
-public interface Filter extends Examinable {
+public interface Filter extends Component, Examinable {
   /**
    * Query this filter for a response.
    *

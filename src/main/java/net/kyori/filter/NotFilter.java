@@ -23,6 +23,7 @@
  */
 package net.kyori.filter;
 
+import net.kyori.component.Component;
 import net.kyori.lambda.examine.ExaminableProperty;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -41,6 +42,11 @@ public final class NotFilter implements Filter {
   @Override
   public @NonNull FilterResponse query(final @NonNull FilterQuery query) {
     return this.filter.query(query).inverse();
+  }
+
+  @Override
+  public @NonNull Stream<? extends Component> dependencies() {
+    return Stream.of(this.filter);
   }
 
   @Override
