@@ -24,7 +24,7 @@
 package net.kyori.filter;
 
 import net.kyori.component.Component;
-import net.kyori.lambda.examine.Examinable;
+import net.kyori.mu.examine.Examinable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**

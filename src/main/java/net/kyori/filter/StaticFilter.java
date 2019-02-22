@@ -23,7 +23,7 @@
  */
 package net.kyori.filter;
 
-import net.kyori.lambda.examine.ExaminableProperty;
+import net.kyori.mu.examine.ExaminableProperty;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.stream.Stream;

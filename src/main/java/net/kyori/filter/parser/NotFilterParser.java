@@ -25,7 +25,7 @@ package net.kyori.filter.parser;
 
 import net.kyori.filter.Filter;
 import net.kyori.filter.NotFilter;
-import net.kyori.lambda.Maybe;
+import net.kyori.mu.Maybe;
 import net.kyori.xml.node.Node;
 import net.kyori.xml.node.parser.Parser;
 

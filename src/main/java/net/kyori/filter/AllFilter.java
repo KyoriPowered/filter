@@ -24,8 +24,8 @@
 package net.kyori.filter;
 
 import net.kyori.component.Component;
-import net.kyori.lambda.collection.MoreIterables;
-import net.kyori.lambda.examine.ExaminableProperty;
+import net.kyori.mu.collection.MuIterables;
+import net.kyori.mu.examine.ExaminableProperty;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.stream.Stream;
@@ -54,7 +54,7 @@ public final class AllFilter implements Filter {
 
   @Override
   public @NonNull Stream<? extends Component> dependencies() {
-    return MoreIterables.stream(this.filters);
+    return MuIterables.stream(this.filters);
   }
 
   @Override

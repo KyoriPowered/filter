@@ -30,8 +30,8 @@ import net.kyori.filter.data.TestQuery1;
 import net.kyori.filter.parser.FilterBinder;
 import net.kyori.filter.parser.FilterModule;
 import net.kyori.filter.parser.FilterParser;
-import net.kyori.lambda.Composer;
-import net.kyori.lambda.function.ThrowingSupplier;
+import net.kyori.mu.Composer;
+import net.kyori.mu.function.ThrowingSupplier;
 import net.kyori.violet.AbstractModule;
 import net.kyori.xml.document.factory.DocumentFactory;
 import net.kyori.xml.node.Node;
@@ -42,9 +42,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
