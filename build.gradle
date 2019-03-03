@@ -34,11 +34,7 @@ repositories {
 dependencies {
   api 'net.kyori:component:1.0.0-SNAPSHOT'
   api 'net.kyori:mu:1.0.0-SNAPSHOT'
-  implementation 'net.kyori:violet:1.0.0'
-  implementation 'net.kyori:xml:2.0.0-SNAPSHOT'
   api 'org.checkerframework:checker-qual:2.5.8'
-  testCompile 'net.kyori:violet:1.0.0'
-  testCompile 'net.kyori:xml:2.0.0-SNAPSHOT'
   testCompile 'org.junit.jupiter:junit-jupiter-api:5.3.1'
   testCompile 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
 }
