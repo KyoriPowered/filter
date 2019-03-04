@@ -24,6 +24,7 @@
 package net.kyori.filter;
 
 import net.kyori.component.Component;
+import net.kyori.mu.examine.Examinable;
 import net.kyori.mu.examine.ExaminableProperty;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -32,7 +33,7 @@ import java.util.stream.Stream;
 /**
  * A filter that returns the inverse response.
  */
-public final class NotFilter implements Filter {
+public final class NotFilter implements Examinable, Filter {
   private final Filter filter;
 
   public NotFilter(final @NonNull Filter filter) {

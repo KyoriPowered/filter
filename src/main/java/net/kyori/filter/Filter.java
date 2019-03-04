@@ -24,13 +24,12 @@
 package net.kyori.filter;
 
 import net.kyori.component.Component;
-import net.kyori.mu.examine.Examinable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * A filter.
  */
-public interface Filter extends Component, Examinable {
+public interface Filter extends Component {
   /**
    * Query this filter for a response.
    *

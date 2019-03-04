@@ -23,6 +23,7 @@
  */
 package net.kyori.filter;
 
+import net.kyori.mu.examine.Examinable;
 import net.kyori.mu.examine.ExaminableProperty;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -31,7 +32,7 @@ import java.util.stream.Stream;
 /**
  * A filter that returns a static response.
  */
-public final class StaticFilter implements Filter {
+public final class StaticFilter implements Examinable, Filter {
   /**
    * A filter that always returns with {@link FilterResponse#ALLOW}.
    */

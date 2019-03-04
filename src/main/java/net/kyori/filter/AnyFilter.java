@@ -25,6 +25,7 @@ package net.kyori.filter;
 
 import net.kyori.component.Component;
 import net.kyori.mu.collection.MuIterables;
+import net.kyori.mu.examine.Examinable;
 import net.kyori.mu.examine.ExaminableProperty;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -33,7 +34,7 @@ import java.util.stream.Stream;
 /**
  * A filter that responds with {@link FilterResponse#ALLOW} if any of its children respond with {@link FilterResponse#ALLOW}.
  */
-public final class AnyFilter implements Filter {
+public final class AnyFilter implements Examinable, Filter {
   private final Iterable<? extends Filter> filters;
 
   public AnyFilter(final @NonNull Iterable<? extends Filter> filters) {
