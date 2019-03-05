@@ -40,6 +40,7 @@ public interface TypedFilter<Q extends FilterQuery> extends Filter {
   boolean queryable(final @NonNull FilterQuery query);
 
   @Override
+  @SuppressWarnings("unchecked")
   default @NonNull FilterResponse query(final @NonNull FilterQuery query) {
     if(!this.queryable(query)) {
       return FilterResponse.ABSTAIN;

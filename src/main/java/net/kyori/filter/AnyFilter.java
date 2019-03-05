@@ -24,9 +24,9 @@
 package net.kyori.filter;
 
 import net.kyori.component.Component;
-import net.kyori.mu.collection.MuIterables;
 import net.kyori.mu.examine.Examinable;
 import net.kyori.mu.examine.ExaminableProperty;
+import net.kyori.mu.stream.MuStreams;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.stream.Stream;
@@ -45,9 +45,11 @@ public final class AnyFilter implements Examinable, Filter {
   public @NonNull FilterResponse query(final @NonNull FilterQuery query) {
     FilterResponse response = FilterResponse.ABSTAIN;
     for(final Filter filter : this.filters) {
-      switch(filter.query(query)) {
-        case ALLOW: return FilterResponse.ALLOW;
-        case DENY: response = FilterResponse.DENY;
+      final FilterResponse reply = filter.query(query);
+      if(reply == FilterResponse.ALLOW) {
+        return FilterResponse.ALLOW;
+      } else if(reply == FilterResponse.DENY) {
+        response = FilterResponse.DENY;
       }
     }
     return response;
@@ -55,7 +57,7 @@ public final class AnyFilter implements Examinable, Filter {
 
   @Override
   public @NonNull Stream<? extends Component> dependencies() {
-    return MuIterables.stream(this.filters);
+    return MuStreams.of(this.filters);
   }
 
   @Override
