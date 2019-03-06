@@ -23,16 +23,48 @@
  */
 package net.kyori.filter;
 
+import com.google.common.testing.EqualsTester;
 import net.kyori.filter.data.TestFilter;
 import net.kyori.filter.data.TestQuery1;
 import org.junit.jupiter.api.Test;
 
+import static com.google.common.truth.Truth8.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AllFilterTest {
   @Test
-  void test() {
+  void testQuery() {
     assertTrue(Filters.all(new TestFilter(10), new TestFilter(10)).allows(TestQuery1.of(10)));
     assertTrue(Filters.all(new TestFilter(10), new TestFilter(20)).denies(TestQuery1.of(10)));
+  }
+
+  @Test
+  void testDependencies() {
+    final TestFilter f0 = new TestFilter(0);
+    final TestFilter f1 = new TestFilter(1);
+    final TestFilter f2 = new TestFilter(2);
+    final AllFilter a0 = Filters.all(f0, f1);
+    assertThat(a0.dependencies()).containsExactly(f0, f1).inOrder();
+    final AllFilter a1 = Filters.all(f1, f2);
+    assertThat(a1.dependencies()).containsExactly(f1, f2).inOrder();
+  }
+
+  @Test
+  void testExaminableProperties() {
+    final TestFilter f0 = new TestFilter(0);
+    final TestFilter f1 = new TestFilter(1);
+    final AllFilter a1 = Filters.all(f0, f1);
+    assertThat(a1.examinableProperties()).hasSize(1);
+  }
+
+  @Test
+  void testEquality() {
+    final TestFilter f0 = new TestFilter(0);
+    final TestFilter f1 = new TestFilter(1);
+    final TestFilter f2 = new TestFilter(2);
+    new EqualsTester()
+      .addEqualityGroup(Filters.all(f0, f1), Filters.all(f0, f1))
+      .addEqualityGroup(Filters.all(f1, f2), Filters.all(f1, f2))
+      .testEquals();
   }
 }

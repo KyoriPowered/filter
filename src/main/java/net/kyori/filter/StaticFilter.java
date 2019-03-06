@@ -27,6 +27,7 @@ import net.kyori.mu.examine.Examinable;
 import net.kyori.mu.examine.ExaminableProperty;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
@@ -59,5 +60,18 @@ public final class StaticFilter implements Examinable, Filter {
   @Override
   public @NonNull Stream<? extends ExaminableProperty> examinableProperties() {
     return Stream.of(ExaminableProperty.of("response", this.response));
+  }
+
+  @Override
+  public boolean equals(final Object other) {
+    if(this == other) return true;
+    if(other == null || this.getClass() != other.getClass()) return false;
+    final StaticFilter that = (StaticFilter) other;
+    return Objects.equals(this.response, that.response);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.response);
   }
 }

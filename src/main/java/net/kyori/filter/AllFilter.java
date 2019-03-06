@@ -29,6 +29,7 @@ import net.kyori.mu.examine.ExaminableProperty;
 import net.kyori.mu.stream.MuStreams;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
@@ -63,5 +64,18 @@ public final class AllFilter implements Examinable, Filter {
   @Override
   public @NonNull Stream<? extends ExaminableProperty> examinableProperties() {
     return Stream.of(ExaminableProperty.of("filters", this.filters));
+  }
+
+  @Override
+  public boolean equals(final Object other) {
+    if(this == other) return true;
+    if(other == null || this.getClass() != other.getClass()) return false;
+    final AllFilter that = (AllFilter) other;
+    return Objects.equals(this.filters, that.filters);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.filters);
   }
 }

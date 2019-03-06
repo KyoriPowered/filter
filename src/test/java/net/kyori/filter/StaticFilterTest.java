@@ -23,24 +23,55 @@
  */
 package net.kyori.filter;
 
+import com.google.common.testing.EqualsTester;
 import net.kyori.filter.data.TestQuery1;
 import org.junit.jupiter.api.Test;
 
+import static com.google.common.truth.Truth8.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class StaticFilterTest {
   @Test
-  void testAllow() {
-    assertEquals(FilterResponse.ALLOW, Filters.allow().query(TestQuery1.of(10)));
+  void testQuery_allow() {
+    for(int i = 0; i < 10; i++) {
+      assertEquals(FilterResponse.ALLOW, Filters.allow().query(TestQuery1.of(i)));
+    }
   }
 
   @Test
-  void testAbstain() {
-    assertEquals(FilterResponse.ABSTAIN, Filters.abstain().query(TestQuery1.of(10)));
+  void testQuery_abstain() {
+    for(int i = 0; i < 10; i++) {
+      assertEquals(FilterResponse.ABSTAIN, Filters.abstain().query(TestQuery1.of(i)));
+    }
   }
 
   @Test
-  void testDeny() {
-    assertEquals(FilterResponse.DENY, Filters.deny().query(TestQuery1.of(10)));
+  void testQuery_deny() {
+    for(int i = 0; i < 10; i++) {
+      assertEquals(FilterResponse.DENY, Filters.deny().query(TestQuery1.of(i)));
+    }
+  }
+
+  @Test
+  void testDependencies() {
+    assertThat(Filters.allow().dependencies()).isEmpty();
+    assertThat(Filters.abstain().dependencies()).isEmpty();
+    assertThat(Filters.deny().dependencies()).isEmpty();
+  }
+
+  @Test
+  void testExaminableProperties() {
+    assertThat(Filters.allow().examinableProperties()).hasSize(1);
+    assertThat(Filters.abstain().examinableProperties()).hasSize(1);
+    assertThat(Filters.deny().examinableProperties()).hasSize(1);
+  }
+
+  @Test
+  void testEquality() {
+    new EqualsTester()
+      .addEqualityGroup(Filters.allow(), Filters.allow())
+      .addEqualityGroup(Filters.abstain(), Filters.abstain())
+      .addEqualityGroup(Filters.deny(), Filters.deny())
+      .testEquals();
   }
 }

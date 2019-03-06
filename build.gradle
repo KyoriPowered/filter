@@ -34,9 +34,12 @@ repositories {
 dependencies {
   api 'net.kyori:component:1.0.0-SNAPSHOT'
   api 'net.kyori:mu:1.0.0-SNAPSHOT'
-  api 'org.checkerframework:checker-qual:2.5.8'
-  testCompile 'org.junit.jupiter:junit-jupiter-api:5.3.1'
-  testCompile 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+  api 'org.checkerframework:checker-qual:2.7.0'
+  testImplementation 'com.google.guava:guava-testlib:27.0.1-jre'
+  testImplementation 'com.google.truth:truth:0.43'
+  testImplementation 'com.google.truth.extensions:truth-java8-extension:0.43'
+  testCompile 'org.junit.jupiter:junit-jupiter-api:5.4.0'
+  testCompile 'org.junit.jupiter:junit-jupiter-engine:5.4.0'
 }
 
 task javadocJar(type: Jar) {
