@@ -48,7 +48,7 @@ public final class StaticFilter implements Examinable, Filter {
   static final StaticFilter DENY = new StaticFilter(FilterResponse.DENY);
   private final FilterResponse response;
 
-  public StaticFilter(final @NonNull FilterResponse response) {
+  protected StaticFilter(final @NonNull FilterResponse response) {
     this.response = response;
   }
 

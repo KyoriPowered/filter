@@ -23,27 +23,46 @@
  */
 package net.kyori.filter;
 
+import net.kyori.component.Component;
+import net.kyori.mu.examine.Examinable;
+import net.kyori.mu.examine.ExaminableProperty;
+import net.kyori.mu.stream.MuStreams;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
+import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
- * A filter that responds with {@link FilterResponse#ALLOW} if any of its children respond with {@link FilterResponse#ALLOW}.
+ * An abstract implementation of a filter that determines its response from the responses of the children filters.
  */
-public final class AnyFilter extends MultiFilter {
-  protected AnyFilter(final @NonNull Iterable<? extends Filter> filters) {
-    super(filters);
+public abstract class MultiFilter implements Examinable, Filter {
+  protected final Iterable<? extends Filter> filters;
+
+  protected MultiFilter(final @NonNull Iterable<? extends Filter> filters) {
+    this.filters = filters;
   }
 
   @Override
-  public @NonNull FilterResponse query(final @NonNull FilterQuery query) {
-    FilterResponse response = FilterResponse.ABSTAIN;
-    for(final Filter filter : this.filters) {
-      final FilterResponse reply = filter.query(query);
-      if(reply == FilterResponse.ALLOW) {
-        return FilterResponse.ALLOW;
-      } else if(reply == FilterResponse.DENY) {
-        response = FilterResponse.DENY;
-      }
-    }
-    return response;
+  public @NonNull Stream<? extends Component> dependencies() {
+    return MuStreams.of(this.filters);
+  }
+
+  @Override
+  public @NonNull Stream<? extends ExaminableProperty> examinableProperties() {
+    return Stream.of(ExaminableProperty.of("filters", this.filters));
+  }
+
+  @Override
+  public boolean equals(final @Nullable Object other) {
+    if(this == other) return true;
+    if(!(other instanceof MultiFilter)) return false;
+    final MultiFilter that = (MultiFilter) other;
+    return Objects.equals(this.filters, that.filters);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.filters);
   }
 }

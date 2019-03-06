@@ -23,27 +23,45 @@
  */
 package net.kyori.filter;
 
+import net.kyori.component.Component;
+import net.kyori.mu.examine.Examinable;
+import net.kyori.mu.examine.ExaminableProperty;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
+import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
- * A filter that responds with {@link FilterResponse#ALLOW} if any of its children respond with {@link FilterResponse#ALLOW}.
+ * An abstract implementation of a filter that determines its response from the response of the children filter.
  */
-public final class AnyFilter extends MultiFilter {
-  protected AnyFilter(final @NonNull Iterable<? extends Filter> filters) {
-    super(filters);
+public abstract class SingleFilter implements Examinable, Filter {
+  protected final Filter filter;
+
+  protected SingleFilter(final @NonNull Filter filter) {
+    this.filter = filter;
   }
 
   @Override
-  public @NonNull FilterResponse query(final @NonNull FilterQuery query) {
-    FilterResponse response = FilterResponse.ABSTAIN;
-    for(final Filter filter : this.filters) {
-      final FilterResponse reply = filter.query(query);
-      if(reply == FilterResponse.ALLOW) {
-        return FilterResponse.ALLOW;
-      } else if(reply == FilterResponse.DENY) {
-        response = FilterResponse.DENY;
-      }
-    }
-    return response;
+  public @NonNull Stream<? extends Component> dependencies() {
+    return Stream.of(this.filter);
+  }
+
+  @Override
+  public @NonNull Stream<? extends ExaminableProperty> examinableProperties() {
+    return Stream.of(ExaminableProperty.of("filter", this.filter));
+  }
+
+  @Override
+  public boolean equals(final @Nullable Object other) {
+    if(this == other) return true;
+    if(!(other instanceof SingleFilter)) return false;
+    final SingleFilter that = (SingleFilter) other;
+    return Objects.equals(this.filter, that.filter);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.filter);
   }
 }

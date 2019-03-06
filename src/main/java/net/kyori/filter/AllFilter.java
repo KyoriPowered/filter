@@ -23,23 +23,14 @@
  */
 package net.kyori.filter;
 
-import net.kyori.component.Component;
-import net.kyori.mu.examine.Examinable;
-import net.kyori.mu.examine.ExaminableProperty;
-import net.kyori.mu.stream.MuStreams;
 import org.checkerframework.checker.nullness.qual.NonNull;
-
-import java.util.Objects;
-import java.util.stream.Stream;
 
 /**
  * A filter that responds with {@link FilterResponse#ALLOW} if all of its children also respond with {@link FilterResponse#ALLOW}.
  */
-public final class AllFilter implements Examinable, Filter {
-  private final Iterable<? extends Filter> filters;
-
-  public AllFilter(final @NonNull Iterable<? extends Filter> filters) {
-    this.filters = filters;
+public final class AllFilter extends MultiFilter {
+  protected AllFilter(final @NonNull Iterable<? extends Filter> filters) {
+    super(filters);
   }
 
   @Override
@@ -54,28 +45,5 @@ public final class AllFilter implements Examinable, Filter {
       }
     }
     return response;
-  }
-
-  @Override
-  public @NonNull Stream<? extends Component> dependencies() {
-    return MuStreams.of(this.filters);
-  }
-
-  @Override
-  public @NonNull Stream<? extends ExaminableProperty> examinableProperties() {
-    return Stream.of(ExaminableProperty.of("filters", this.filters));
-  }
-
-  @Override
-  public boolean equals(final Object other) {
-    if(this == other) return true;
-    if(other == null || this.getClass() != other.getClass()) return false;
-    final AllFilter that = (AllFilter) other;
-    return Objects.equals(this.filters, that.filters);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(this.filters);
   }
 }
