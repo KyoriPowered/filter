@@ -24,7 +24,6 @@
 package net.kyori.filter.data;
 
 import net.kyori.filter.FilterQuery;
-import net.kyori.filter.FilterResponse;
 import net.kyori.filter.TypedFilter;
 import net.kyori.mu.examine.Examinable;
 import net.kyori.mu.examine.ExaminableProperty;
@@ -32,7 +31,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.stream.Stream;
 
-public class TestFilter implements Examinable, TypedFilter<TestQuery1> {
+public class TestFilter implements Examinable, TypedFilter.Strong<TestQuery1> {
   private final int number;
 
   public TestFilter(final int number) {
@@ -45,8 +44,8 @@ public class TestFilter implements Examinable, TypedFilter<TestQuery1> {
   }
 
   @Override
-  public @NonNull FilterResponse typedQuery(final @NonNull TestQuery1 query) {
-    return FilterResponse.from(this.number == query.number());
+  public boolean queryResponse(final @NonNull TestQuery1 query) {
+    return this.number == query.number();
   }
 
   @Override

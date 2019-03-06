@@ -28,6 +28,8 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 /**
  * A filter which accepts queries of type {@code Q}.
  *
+ * <p>It is highly preferred to implement {@link Weak} or {@link Strong} instead of {@code TypedFilter} directly.</p>
+ *
  * @param <Q> the query type
  */
 public interface TypedFilter<Q extends FilterQuery> extends Filter {
@@ -55,4 +57,32 @@ public interface TypedFilter<Q extends FilterQuery> extends Filter {
    * @return the response
    */
   @NonNull FilterResponse typedQuery(final @NonNull Q query);
+
+  /**
+   * A filter that may respond to queries of type {@code Q}.
+   *
+   * @param <Q> the query type
+   */
+  interface Weak<Q extends FilterQuery> extends TypedFilter<Q> {
+  }
+
+  /**
+   * A filter that <b>always</b> responds to queries of type {@code Q}.
+   *
+   * @param <Q> the query type
+   */
+  interface Strong<Q extends FilterQuery> extends TypedFilter<Q> {
+    @Override
+    default @NonNull FilterResponse typedQuery(final @NonNull Q query) {
+      return FilterResponse.from(this.queryResponse(query));
+    }
+
+    /**
+     * Query this filter for a response.
+     *
+     * @param query the query
+     * @return the response
+     */
+    boolean queryResponse(final @NonNull Q query);
+  }
 }
