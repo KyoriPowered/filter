@@ -28,31 +28,14 @@ import net.kyori.filter.data.TestQuery1;
 import net.kyori.filter.data.TestQuery2;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class FilterTest {
+class TypedFilterTest {
   @Test
-  void testQuery_allow() {
-    final TestFilter f0 = new TestFilter(0);
-    final FilterQuery q0 = TestQuery1.of(0);
-    assertEquals(FilterResponse.ALLOW, f0.query(q0));
-    assertTrue(f0.allows(q0));
-  }
-
-  @Test
-  void testQuery_abstain() {
-    final TestFilter f0 = new TestFilter(0);
-    final FilterQuery q0 = TestQuery2.of();
-    assertEquals(FilterResponse.ABSTAIN, f0.query(q0));
-    assertTrue(f0.abstains(q0));
-  }
-
-  @Test
-  void testQuery_deny() {
-    final TestFilter f0 = new TestFilter(0);
-    final FilterQuery q0 = TestQuery1.of(1);
-    assertEquals(FilterResponse.DENY, f0.query(q0));
-    assertTrue(f0.denies(q0));
+  void testQueryable() {
+    final TestFilter filter = new TestFilter(0);
+    assertTrue(filter.queryable(TestQuery1.of(0)));
+    assertFalse(filter.queryable(TestQuery2.of()));
   }
 }

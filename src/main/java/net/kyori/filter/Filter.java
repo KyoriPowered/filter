@@ -39,7 +39,7 @@ public interface Filter extends Component {
   @NonNull FilterResponse query(final @NonNull FilterQuery query);
 
   /**
-   * Query this filter and return {@code true} if {@link FilterResponse#ALLOW allowed} and {@code false} otherwise.
+   * Query this filter and return {@code true} if the response is {@link FilterResponse#ALLOW}, and {@code false} otherwise.
    *
    * @param query the query
    * @return {@code true} if allowed, {@code false} otherwise
@@ -49,7 +49,17 @@ public interface Filter extends Component {
   }
 
   /**
-   * Query this filter and return {@code true} if {@link FilterResponse#DENY denied} and {@code false} otherwise.
+   * Query this filter and return {@code true} if the response is {@link FilterResponse#ABSTAIN}, and {@code false} otherwise.
+   *
+   * @param query the query
+   * @return {@code true} if abstained, {@code false} otherwise
+   */
+  default boolean abstains(final @NonNull FilterQuery query) {
+    return this.query(query) == FilterResponse.ABSTAIN;
+  }
+
+  /**
+   * Query this filter and return {@code true} if the response is {@link FilterResponse#DENY}, and {@code false} otherwise.
    *
    * @param query the query
    * @return {@code true} if denied, {@code false} otherwise
