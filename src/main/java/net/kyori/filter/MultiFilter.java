@@ -24,8 +24,8 @@
 package net.kyori.filter;
 
 import net.kyori.component.Component;
-import net.kyori.mu.examine.Examinable;
-import net.kyori.mu.examine.ExaminableProperty;
+import net.kyori.mu.examination.Examinable;
+import net.kyori.mu.examination.ExaminableProperty;
 import net.kyori.mu.stream.MuStreams;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;

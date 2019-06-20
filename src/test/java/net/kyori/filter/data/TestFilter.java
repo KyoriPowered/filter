@@ -25,8 +25,8 @@ package net.kyori.filter.data;
 
 import net.kyori.filter.FilterQuery;
 import net.kyori.filter.TypedFilter;
-import net.kyori.mu.examine.Examinable;
-import net.kyori.mu.examine.ExaminableProperty;
+import net.kyori.mu.examination.Examinable;
+import net.kyori.mu.examination.ExaminableProperty;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.stream.Stream;

@@ -1,24 +1,20 @@
 plugins {
   id 'java-library'
-  id 'maven'
+  id 'maven-publish'
   id 'signing'
+  id 'net.kyori.invent' version '1.0.4'
+  id 'net.kyori.invent-javadoc-jar' version '1.0.4'
+  id 'net.kyori.invent-sonatype-repository' version '1.0.4'
+  id 'net.kyori.invent-sources-jar' version '1.0.4'
   id 'net.minecrell.licenser' version '0.4.1'
 }
 
 group 'net.kyori'
+description 'Filters.'
 version '1.0.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
 tasks.withType(JavaCompile) {
-  options.compilerArgs += ['-Xlint:all', '-Xlint:-path', '-parameters']
-  options.deprecation = true
-  options.encoding = 'UTF-8'
-}
-
-test {
-  useJUnitPlatform()
+  options.compilerArgs += ['-Xlint:all']
 }
 
 license {
@@ -38,32 +34,12 @@ repositories {
 dependencies {
   api 'net.kyori:component:1.0.0-SNAPSHOT'
   api 'net.kyori:mu:1.0.0-SNAPSHOT'
-  api 'org.checkerframework:checker-qual:2.7.0'
-  testImplementation 'com.google.guava:guava-testlib:27.0.1-jre'
-  testImplementation 'com.google.truth:truth:0.43'
-  testImplementation 'com.google.truth.extensions:truth-java8-extension:0.43'
-  testCompile 'org.junit.jupiter:junit-jupiter-api:5.4.0'
-  testCompile 'org.junit.jupiter:junit-jupiter-engine:5.4.0'
-}
-
-task javadocJar(type: Jar) {
-  classifier 'javadoc'
-  from javadoc
-}
-
-task sourcesJar(type: Jar) {
-  classifier 'sources'
-  from sourceSets.main.allSource
-}
-
-artifacts {
-  archives javadocJar
-  archives sourcesJar
-}
-
-signing {
-  required { !project.version.endsWith('-SNAPSHOT') && gradle.taskGraph.hasTask(':uploadArchives') && project.hasProperty('signing.keyId') }
-  sign configurations.archives
+  api 'org.checkerframework:checker-qual:2.8.2'
+  testImplementation 'com.google.guava:guava-testlib:28.0-jre'
+  testImplementation 'com.google.truth:truth:0.45'
+  testImplementation 'com.google.truth.extensions:truth-java8-extension:0.45'
+  testCompile 'org.junit.jupiter:junit-jupiter-api:5.4.2'
+  testCompile 'org.junit.jupiter:junit-jupiter-engine:5.4.2'
 }
 
 jar {
@@ -72,52 +48,49 @@ jar {
   )
 }
 
-if(project.hasProperty('sonatypeUsername') && project.hasProperty('sonatypePassword')) {
-  uploadArchives {
-    enabled = System.getenv('TRAVIS') == null || project.version.endsWith('-SNAPSHOT')
+inventSonatypeRepository.enabled = System.getenv('TRAVIS') == null || project.version.endsWith('-SNAPSHOT')
 
-    repositories {
-      mavenDeployer {
-        beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+publishing {
+  publications {
+    maven(MavenPublication) {
+      from components.java
 
-        repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
-          authentication(userName: sonatypeUsername, password: sonatypePassword)
+      artifact javadocJar
+      artifact sourcesJar
+
+      pom {
+        name = project.name
+        description = project.description
+
+        developers {
+          developer {
+            id = 'kashike'
+          }
         }
 
-        snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots/') {
-          authentication(userName: sonatypeUsername, password: sonatypePassword)
+        issueManagement {
+          system = 'GitHub Issues'
+          url = 'https://github.com/KyoriPowered/filter/issues'
         }
 
-        pom.project {
-          description 'filter'
-          name project.name
-          url 'https://github.com/KyoriPowered/filter/'
-
-          developers {
-            developer {
-              name 'kashike'
-            }
+        licenses {
+          license {
+            name = 'MIT License'
+            url = 'https://opensource.org/licenses/MIT'
           }
+        }
 
-          issueManagement {
-            system 'GitHub Issues'
-            url 'https://github.com/KyoriPowered/filter/issues'
-          }
-
-          licenses {
-            license {
-              name 'MIT License'
-              url 'https://opensource.org/licenses/MIT'
-            }
-          }
-
-          scm {
-            connection 'scm:git@github.com:KyoriPowered/filter.git'
-            developerConnection 'scm:git@github.com:KyoriPowered/filter.git'
-            url 'https://github.com/KyoriPowered/filter/'
-          }
+        scm {
+          connection = 'scm:git@github.com:KyoriPowered/filter.git'
+          developerConnection = 'scm:git@github.com:KyoriPowered/filter.git'
+          url = 'https://github.com/KyoriPowered/filter/'
         }
       }
     }
   }
+}
+
+signing {
+  required { project.hasProperty('signing.keyId') && gradle.taskGraph.hasTask(':publish') && project.version.endsWith('-SNAPSHOT') }
+  sign publishing.publications.maven
 }
