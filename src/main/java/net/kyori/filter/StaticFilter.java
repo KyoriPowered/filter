@@ -23,12 +23,11 @@
  */
 package net.kyori.filter;
 
-import net.kyori.mu.examination.Examinable;
-import net.kyori.mu.examination.ExaminableProperty;
-import org.checkerframework.checker.nullness.qual.NonNull;
-
 import java.util.Objects;
 import java.util.stream.Stream;
+import net.kyori.examination.Examinable;
+import net.kyori.examination.ExaminableProperty;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * A filter that returns a static response.
@@ -60,6 +59,11 @@ public final class StaticFilter implements Examinable, Filter {
   @Override
   public @NonNull Stream<? extends ExaminableProperty> examinableProperties() {
     return Stream.of(ExaminableProperty.of("response", this.response));
+  }
+
+  @Override
+  public @NonNull String toString() {
+    return "StaticFilter{response=" + this.response + '}';
   }
 
   @Override

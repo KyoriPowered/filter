@@ -23,9 +23,8 @@
  */
 package net.kyori.filter;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-
 import java.util.Arrays;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * Filters.

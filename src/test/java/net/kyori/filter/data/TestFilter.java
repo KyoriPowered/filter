@@ -23,13 +23,12 @@
  */
 package net.kyori.filter.data;
 
+import java.util.stream.Stream;
+import net.kyori.examination.Examinable;
+import net.kyori.examination.ExaminableProperty;
 import net.kyori.filter.FilterQuery;
 import net.kyori.filter.TypedFilter;
-import net.kyori.mu.examination.Examinable;
-import net.kyori.mu.examination.ExaminableProperty;
 import org.checkerframework.checker.nullness.qual.NonNull;
-
-import java.util.stream.Stream;
 
 public class TestFilter implements Examinable, TypedFilter.Strong<TestQuery1> {
   private final int number;

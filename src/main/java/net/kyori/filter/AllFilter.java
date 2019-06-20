@@ -23,6 +23,7 @@
  */
 package net.kyori.filter;
 
+import java.util.List;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
@@ -36,8 +37,9 @@ public final class AllFilter extends MultiFilter {
   @Override
   public @NonNull FilterResponse query(final @NonNull FilterQuery query) {
     FilterResponse response = FilterResponse.ABSTAIN;
-    for(final Filter filter : this.filters) {
-      final FilterResponse reply = filter.query(query);
+    final List<? extends Filter> filters = this.filters;
+    for(int i = 0, size = filters.size(); i < size; i++) {
+      final FilterResponse reply = filters.get(i).query(query);
       if(reply == FilterResponse.ALLOW) {
         response = FilterResponse.ALLOW;
       } else if(reply == FilterResponse.DENY) {
