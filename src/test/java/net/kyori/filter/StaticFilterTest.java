@@ -1,7 +1,7 @@
 /*
  * This file is part of filter, licensed under the MIT License.
  *
- * Copyright (c) 2018-2019 KyoriPowered
+ * Copyright (c) 2018-2020 KyoriPowered
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,6 @@
 package net.kyori.filter;
 
 import com.google.common.testing.EqualsTester;
-import net.kyori.filter.data.TestQuery1;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth8.assertThat;
@@ -34,21 +33,21 @@ class StaticFilterTest {
   @Test
   void testQuery_allow() {
     for(int i = 0; i < 10; i++) {
-      assertEquals(FilterResponse.ALLOW, Filters.allow().query(TestQuery1.of(i)));
+      assertEquals(FilterResponse.ALLOW, Filters.allow().query(TestFilter.Query.of(i)));
     }
   }
 
   @Test
   void testQuery_abstain() {
     for(int i = 0; i < 10; i++) {
-      assertEquals(FilterResponse.ABSTAIN, Filters.abstain().query(TestQuery1.of(i)));
+      assertEquals(FilterResponse.ABSTAIN, Filters.abstain().query(TestFilter.Query.of(i)));
     }
   }
 
   @Test
   void testQuery_deny() {
     for(int i = 0; i < 10; i++) {
-      assertEquals(FilterResponse.DENY, Filters.deny().query(TestQuery1.of(i)));
+      assertEquals(FilterResponse.DENY, Filters.deny().query(TestFilter.Query.of(i)));
     }
   }
 

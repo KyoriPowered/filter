@@ -1,7 +1,7 @@
 /*
  * This file is part of filter, licensed under the MIT License.
  *
- * Copyright (c) 2018-2019 KyoriPowered
+ * Copyright (c) 2018-2020 KyoriPowered
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,13 @@
  */
 package net.kyori.filter;
 
-import net.kyori.component.Component;
+import net.kyori.feature.Feature;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * A filter.
  */
-public interface Filter extends Component {
+public interface Filter extends Feature {
   /**
    * Query this filter for a response.
    *

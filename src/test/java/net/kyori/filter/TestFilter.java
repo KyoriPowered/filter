@@ -1,7 +1,7 @@
 /*
  * This file is part of filter, licensed under the MIT License.
  *
- * Copyright (c) 2018-2019 KyoriPowered
+ * Copyright (c) 2018-2020 KyoriPowered
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,14 +21,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package net.kyori.filter.data;
+package net.kyori.filter;
 
-import net.kyori.filter.FilterQuery;
+import java.util.stream.Stream;
+import net.kyori.examination.Examinable;
+import net.kyori.examination.ExaminableProperty;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
-public interface TestQuery1 extends FilterQuery {
-  static TestQuery1 of(final int number) {
-    return () -> number;
+public class TestFilter implements Examinable, TypedFilter.Strong<TestFilter.Query> {
+  private final int number;
+
+  public TestFilter(final int number) {
+    this.number = number;
   }
 
-  int number();
+  @Override
+  public boolean queryable(final @NonNull FilterQuery query) {
+    return query instanceof Query;
+  }
+
+  @Override
+  public boolean queryResponse(final @NonNull Query query) {
+    return this.number == query.number();
+  }
+
+  @Override
+  public @NonNull Stream<? extends ExaminableProperty> examinableProperties() {
+    return Stream.of(ExaminableProperty.of("number", this.number));
+  }
+
+  public interface Query extends FilterQuery {
+    static Query of(final int number) {
+      return () -> number;
+    }
+
+    int number();
+  }
 }

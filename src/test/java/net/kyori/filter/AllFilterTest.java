@@ -1,7 +1,7 @@
 /*
  * This file is part of filter, licensed under the MIT License.
  *
- * Copyright (c) 2018-2019 KyoriPowered
+ * Copyright (c) 2018-2020 KyoriPowered
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,8 +24,6 @@
 package net.kyori.filter;
 
 import com.google.common.testing.EqualsTester;
-import net.kyori.filter.data.TestFilter;
-import net.kyori.filter.data.TestQuery1;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth8.assertThat;
@@ -34,8 +32,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class AllFilterTest {
   @Test
   void testQuery() {
-    assertTrue(Filters.all(new TestFilter(10), new TestFilter(10)).allows(TestQuery1.of(10)));
-    assertTrue(Filters.all(new TestFilter(10), new TestFilter(20)).denies(TestQuery1.of(10)));
+    assertTrue(Filters.all(new TestFilter(10), new TestFilter(10)).allows(TestFilter.Query.of(10)));
+    assertTrue(Filters.all(new TestFilter(10), new TestFilter(20)).denies(TestFilter.Query.of(10)));
   }
 
   @Test

@@ -1,7 +1,7 @@
 /*
  * This file is part of filter, licensed under the MIT License.
  *
- * Copyright (c) 2018-2019 KyoriPowered
+ * Copyright (c) 2018-2020 KyoriPowered
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,11 +30,12 @@ import org.checkerframework.checker.nullness.qual.NonNull;
  * A filter that responds with {@link FilterResponse#ALLOW} if any of its children respond with {@link FilterResponse#ALLOW}.
  */
 public final class AnyFilter extends MultiFilter {
-  protected AnyFilter(final @NonNull Iterable<? extends Filter> filters) {
+  AnyFilter(final @NonNull Iterable<? extends Filter> filters) {
     super(filters);
   }
 
   @Override
+  @SuppressWarnings("ForLoopReplaceableByForEach")
   public @NonNull FilterResponse query(final @NonNull FilterQuery query) {
     FilterResponse response = FilterResponse.ABSTAIN;
     final List<? extends Filter> filters = this.filters;

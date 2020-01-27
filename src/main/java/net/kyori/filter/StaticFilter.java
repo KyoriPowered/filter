@@ -1,7 +1,7 @@
 /*
  * This file is part of filter, licensed under the MIT License.
  *
- * Copyright (c) 2018-2019 KyoriPowered
+ * Copyright (c) 2018-2020 KyoriPowered
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,7 +47,7 @@ public final class StaticFilter implements Examinable, Filter {
   static final StaticFilter DENY = new StaticFilter(FilterResponse.DENY);
   private final FilterResponse response;
 
-  protected StaticFilter(final @NonNull FilterResponse response) {
+  private StaticFilter(final @NonNull FilterResponse response) {
     this.response = response;
   }
 

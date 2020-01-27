@@ -32,7 +32,7 @@ repositories {
 }
 
 dependencies {
-  api 'net.kyori:component:1.0.0-SNAPSHOT'
+  api 'net.kyori:feature:1.0.0-SNAPSHOT'
   api 'net.kyori:examination-api:1.0.0-SNAPSHOT'
   api 'org.checkerframework:checker-qual:2.8.2'
   testImplementation 'com.google.guava:guava-testlib:28.0-jre'
@@ -60,6 +60,7 @@ publishing {
 
       pom {
         name = project.name
+        url = 'https://github.com/KyoriPowered/filter'
         description = project.description
 
         developers {
@@ -91,6 +92,6 @@ publishing {
 }
 
 signing {
-  required { project.hasProperty('signing.keyId') && gradle.taskGraph.hasTask(':publish') && project.version.endsWith('-SNAPSHOT') }
+  required { project.hasProperty('signing.keyId') && gradle.taskGraph.hasTask(':publish') && !project.version.endsWith('-SNAPSHOT') }
   sign publishing.publications.maven
 }

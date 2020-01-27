@@ -1,7 +1,7 @@
 /*
  * This file is part of filter, licensed under the MIT License.
  *
- * Copyright (c) 2018-2019 KyoriPowered
+ * Copyright (c) 2018-2020 KyoriPowered
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,9 +23,7 @@
  */
 package net.kyori.filter;
 
-import net.kyori.filter.data.TestFilter;
-import net.kyori.filter.data.TestQuery1;
-import net.kyori.filter.data.TestQuery2;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -34,8 +32,60 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class TypedFilterTest {
   @Test
   void testQueryable() {
-    final TestFilter filter = new TestFilter(0);
-    assertTrue(filter.queryable(TestQuery1.of(0)));
-    assertFalse(filter.queryable(TestQuery2.of()));
+    final TestFilterA f0 = new TestFilterA();
+    assertTrue(f0.queryable(TestQueryA.create()));
+    assertFalse(f0.queryable(TestQueryB.create()));
+    final TestFilterB f1 = new TestFilterB();
+    assertFalse(f1.queryable(TestQueryA.create()));
+    assertTrue(f1.queryable(TestQueryB.create()));
+  }
+
+  @Test
+  void testQuery() {
+    final TestFilterA f0 = new TestFilterA();
+    assertTrue(f0.abstains(TestQueryB.create()));
+    final TestFilterB f1 = new TestFilterB();
+    assertTrue(f1.abstains(TestQueryA.create()));
+  }
+
+  private static class TestFilterA implements TypedFilter.Strong<TestQueryA> {
+    @Override
+    public boolean queryable(final @NonNull FilterQuery query) {
+      return query instanceof TestQueryA;
+    }
+
+    @Override
+    public boolean queryResponse(final @NonNull TestQueryA query) {
+      throw new UnsupportedOperationException();
+    }
+  }
+
+  private static class TestFilterB implements TypedFilter.Strong<TestQueryB> {
+    @Override
+    public boolean queryable(final @NonNull FilterQuery query) {
+      return query instanceof TestQueryB;
+    }
+
+    @Override
+    public boolean queryResponse(final @NonNull TestQueryB query) {
+      throw new UnsupportedOperationException();
+    }
+  }
+
+  private interface TestQuery extends FilterQuery {
+  }
+
+  private interface TestQueryA extends TestQuery {
+    static TestQueryA create() {
+      return new TestQueryA() {
+      };
+    }
+  }
+
+  private interface TestQueryB extends TestQuery {
+    static TestQueryB create() {
+      return new TestQueryB() {
+      };
+    }
   }
 }
