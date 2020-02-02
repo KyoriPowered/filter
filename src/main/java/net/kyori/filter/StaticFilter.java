@@ -24,15 +24,12 @@
 package net.kyori.filter;
 
 import java.util.Objects;
-import java.util.stream.Stream;
-import net.kyori.examination.Examinable;
-import net.kyori.examination.ExaminableProperty;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * A filter that returns a static response.
  */
-public final class StaticFilter implements Examinable, Filter {
+public final class StaticFilter implements Filter {
   /**
    * A filter that always returns with {@link FilterResponse#ALLOW}.
    */
@@ -57,11 +54,6 @@ public final class StaticFilter implements Examinable, Filter {
   }
 
   @Override
-  public @NonNull Stream<? extends ExaminableProperty> examinableProperties() {
-    return Stream.of(ExaminableProperty.of("response", this.response));
-  }
-
-  @Override
   public @NonNull String toString() {
     return "StaticFilter{response=" + this.response + '}';
   }
@@ -76,6 +68,6 @@ public final class StaticFilter implements Examinable, Filter {
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.response);
+    return this.response.hashCode();
   }
 }

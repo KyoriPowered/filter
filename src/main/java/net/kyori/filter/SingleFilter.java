@@ -25,8 +25,6 @@ package net.kyori.filter;
 
 import java.util.Objects;
 import java.util.stream.Stream;
-import net.kyori.examination.Examinable;
-import net.kyori.examination.ExaminableProperty;
 import net.kyori.feature.Feature;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -34,7 +32,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 /**
  * An abstract implementation of a filter that determines its response from the response of the children filter.
  */
-public abstract class SingleFilter implements Examinable, Filter {
+public abstract class SingleFilter implements Filter {
   protected final Filter filter;
 
   protected SingleFilter(final @NonNull Filter filter) {
@@ -44,11 +42,6 @@ public abstract class SingleFilter implements Examinable, Filter {
   @Override
   public @NonNull Stream<? extends Feature> dependencies() {
     return Stream.of(this.filter);
-  }
-
-  @Override
-  public @NonNull Stream<? extends ExaminableProperty> examinableProperties() {
-    return Stream.of(ExaminableProperty.of("filter", this.filter));
   }
 
   @Override

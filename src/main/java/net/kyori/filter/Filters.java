@@ -23,7 +23,8 @@
  */
 package net.kyori.filter;
 
-import java.util.Arrays;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
@@ -36,8 +37,8 @@ public interface Filters {
    * @param filters the filters
    * @return an all filter
    */
-  static @NonNull AllFilter all(final @NonNull Filter... filters) {
-    return all(Arrays.asList(filters));
+  static @NonNull Filter all(final @NonNull Filter... filters) {
+    return all(Stream.of(filters));
   }
 
   /**
@@ -46,7 +47,17 @@ public interface Filters {
    * @param filters the filters
    * @return an all filter
    */
-  static @NonNull AllFilter all(final @NonNull Iterable<? extends Filter> filters) {
+  static @NonNull Filter all(final @NonNull Iterable<? extends Filter> filters) {
+    return all(StreamSupport.stream(filters.spliterator(), false));
+  }
+
+  /**
+   * Creates a filter that responds with {@link FilterResponse#ALLOW} if all of its children also respond with {@link FilterResponse#ALLOW}.
+   *
+   * @param filters the filters
+   * @return an all filter
+   */
+  static @NonNull Filter all(final @NonNull Stream<? extends Filter> filters) {
     return new AllFilter(filters);
   }
 
@@ -56,8 +67,8 @@ public interface Filters {
    * @param filters the filters
    * @return an any filter
    */
-  static @NonNull AnyFilter any(final @NonNull Filter... filters) {
-    return any(Arrays.asList(filters));
+  static @NonNull Filter any(final @NonNull Filter... filters) {
+    return any(Stream.of(filters));
   }
 
   /**
@@ -66,7 +77,17 @@ public interface Filters {
    * @param filters the filters
    * @return an any filter
    */
-  static @NonNull AnyFilter any(final @NonNull Iterable<? extends Filter> filters) {
+  static @NonNull Filter any(final @NonNull Iterable<? extends Filter> filters) {
+    return any(StreamSupport.stream(filters.spliterator(), false));
+  }
+
+  /**
+   * Creates a filter that responds with {@link FilterResponse#ALLOW} if any of its children respond with {@link FilterResponse#ALLOW}.
+   *
+   * @param filters the filters
+   * @return an any filter
+   */
+  static @NonNull Filter any(final @NonNull Stream<? extends Filter> filters) {
     return new AnyFilter(filters);
   }
 
@@ -76,8 +97,26 @@ public interface Filters {
    * @param filter a filter
    * @return a not filter
    */
-  static @NonNull NotFilter not(final @NonNull Filter filter) {
+  static @NonNull Filter not(final @NonNull Filter filter) {
+    if(filter instanceof NotFilter) return ((NotFilter) filter).filter;
     return new NotFilter(filter);
+  }
+
+  /**
+   * Gets a filter that always responds with {@code response}.
+   *
+   * @return a filter
+   */
+  static @NonNull Filter always(final @NonNull FilterResponse response) {
+    if(response == FilterResponse.ALLOW) {
+      return allow();
+    } else if(response == FilterResponse.ABSTAIN) {
+      return abstain();
+    } else if(response == FilterResponse.DENY) {
+      return deny();
+    } else {
+      throw new IllegalArgumentException(String.format("Unknown filter response '%s'", response.name()));
+    }
   }
 
   /**
@@ -85,7 +124,7 @@ public interface Filters {
    *
    * @return a filter
    */
-  static @NonNull StaticFilter allow() {
+  static @NonNull Filter allow() {
     return StaticFilter.ALLOW;
   }
 
@@ -94,7 +133,7 @@ public interface Filters {
    *
    * @return a filter
    */
-  static @NonNull StaticFilter abstain() {
+  static @NonNull Filter abstain() {
     return StaticFilter.ABSTAIN;
   }
 
@@ -103,7 +142,7 @@ public interface Filters {
    *
    * @return a filter
    */
-  static @NonNull StaticFilter deny() {
+  static @NonNull Filter deny() {
     return StaticFilter.DENY;
   }
 }

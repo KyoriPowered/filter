@@ -24,13 +24,14 @@
 package net.kyori.filter;
 
 import java.util.List;
+import java.util.stream.Stream;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * A filter that responds with {@link FilterResponse#ALLOW} if all of its children also respond with {@link FilterResponse#ALLOW}.
  */
 public final class AllFilter extends MultiFilter {
-  AllFilter(final @NonNull Iterable<? extends Filter> filters) {
+  AllFilter(final @NonNull Stream<? extends Filter> filters) {
     super(filters);
   }
 

@@ -23,15 +23,12 @@
  */
 package net.kyori.filter;
 
-import java.util.stream.Stream;
-import net.kyori.examination.Examinable;
-import net.kyori.examination.ExaminableProperty;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class TestFilter implements Examinable, TypedFilter.Strong<TestFilter.Query> {
-  private final int number;
+abstract class TestFilter implements TypedFilter.Strong<TestFilter.Query> {
+  final int number;
 
-  public TestFilter(final int number) {
+  TestFilter(final int number) {
     this.number = number;
   }
 
@@ -40,14 +37,37 @@ public class TestFilter implements Examinable, TypedFilter.Strong<TestFilter.Que
     return query instanceof Query;
   }
 
-  @Override
-  public boolean queryResponse(final @NonNull Query query) {
-    return this.number == query.number();
+  static class Below extends TestFilter {
+    Below(final int value) {
+      super(value);
+    }
+
+    @Override
+    public boolean queryResponse(final TestFilter.@NonNull Query query) {
+      return query.number() < this.number;
+    }
   }
 
-  @Override
-  public @NonNull Stream<? extends ExaminableProperty> examinableProperties() {
-    return Stream.of(ExaminableProperty.of("number", this.number));
+  static class Equals extends TestFilter {
+    Equals(final int number) {
+      super(number);
+    }
+
+    @Override
+    public boolean queryResponse(final @NonNull Query query) {
+      return this.number == query.number();
+    }
+  }
+
+  static class Above extends TestFilter {
+    Above(final int value) {
+      super(value);
+    }
+
+    @Override
+    public boolean queryResponse(final TestFilter.@NonNull Query query) {
+      return query.number() > this.number;
+    }
   }
 
   public interface Query extends FilterQuery {

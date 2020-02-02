@@ -27,38 +27,47 @@ import com.google.common.testing.EqualsTester;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth8.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class NotFilterTest {
   @Test
   void testQuery() {
-    final Filter filter = Filters.not(new TestFilter(20));
+    final Filter filter = Filters.not(
+      new TestFilter.Equals(20)
+    );
     assertTrue(filter.allows(TestFilter.Query.of(10)));
     assertTrue(filter.allows(TestFilter.Query.of(15)));
     assertTrue(filter.denies(TestFilter.Query.of(20)));
   }
 
   @Test
+  void testNotNotIsOriginal() {
+    final Filter f0 = new TestFilter.Equals(0);
+    final Filter n0 = Filters.not(f0);
+    assertEquals(f0, Filters.not(n0));
+  }
+
+  @Test
   void testDependencies() {
-    final TestFilter f0 = new TestFilter(0);
-    final NotFilter n0 = Filters.not(f0);
+    final TestFilter f0 = new TestFilter.Equals(0);
+    final Filter n0 = Filters.not(f0);
     assertThat(n0.dependencies()).containsExactly(f0);
   }
 
   @Test
-  void testExaminableProperties() {
-    final TestFilter f0 = new TestFilter(0);
-    final NotFilter n0 = Filters.not(f0);
-    assertThat(n0.examinableProperties()).hasSize(1);
-  }
-
-  @Test
   void testEquality() {
-    final TestFilter f0 = new TestFilter(0);
-    final TestFilter f1 = new TestFilter(1);
+    final TestFilter f0 = new TestFilter.Equals(0);
+    final TestFilter f1 = new TestFilter.Equals(1);
     new EqualsTester()
-      .addEqualityGroup(Filters.not(f0), Filters.not(f0))
-      .addEqualityGroup(Filters.not(f1), Filters.not(f1))
+      .addEqualityGroup(
+        Filters.not(f0),
+        Filters.not(f0)
+      )
+      .addEqualityGroup(
+        Filters.not(f1),
+        Filters.not(f1)
+      )
       .testEquals();
   }
 }

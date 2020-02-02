@@ -32,7 +32,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class AnyFilterTest {
   @Test
   void testQuery() {
-    final AnyFilter filter = Filters.any(new TestFilter(10), new TestFilter(20));
+    final Filter filter = Filters.any(
+      new TestFilter.Equals(10),
+      new TestFilter.Equals(20)
+    );
     assertTrue(filter.allows(TestFilter.Query.of(10)));
     assertTrue(filter.denies(TestFilter.Query.of(15)));
     assertTrue(filter.allows(TestFilter.Query.of(20)));
@@ -40,31 +43,29 @@ class AnyFilterTest {
 
   @Test
   void testDependencies() {
-    final TestFilter f0 = new TestFilter(0);
-    final TestFilter f1 = new TestFilter(1);
-    final TestFilter f2 = new TestFilter(2);
-    final AnyFilter a0 = Filters.any(f0, f1);
+    final TestFilter f0 = new TestFilter.Equals(0);
+    final TestFilter f1 = new TestFilter.Equals(1);
+    final TestFilter f2 = new TestFilter.Equals(2);
+    final Filter a0 = Filters.any(f0, f1);
     assertThat(a0.dependencies()).containsExactly(f0, f1).inOrder();
-    final AnyFilter a1 = Filters.any(f1, f2);
+    final Filter a1 = Filters.any(f1, f2);
     assertThat(a1.dependencies()).containsExactly(f1, f2).inOrder();
   }
 
   @Test
-  void testExaminableProperties() {
-    final TestFilter f0 = new TestFilter(0);
-    final TestFilter f1 = new TestFilter(1);
-    final AnyFilter a1 = Filters.any(f0, f1);
-    assertThat(a1.examinableProperties()).hasSize(1);
-  }
-
-  @Test
   void testEquality() {
-    final TestFilter f0 = new TestFilter(0);
-    final TestFilter f1 = new TestFilter(1);
-    final TestFilter f2 = new TestFilter(2);
+    final TestFilter f0 = new TestFilter.Equals(0);
+    final TestFilter f1 = new TestFilter.Equals(1);
+    final TestFilter f2 = new TestFilter.Equals(2);
     new EqualsTester()
-      .addEqualityGroup(Filters.any(f0, f1), Filters.any(f0, f1))
-      .addEqualityGroup(Filters.any(f1, f2), Filters.any(f1, f2))
+      .addEqualityGroup(
+        Filters.any(f0, f1),
+        Filters.any(f0, f1)
+      )
+      .addEqualityGroup(
+        Filters.any(f1, f2),
+        Filters.any(f1, f2)
+      )
       .testEquals();
   }
 }

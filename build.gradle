@@ -32,8 +32,7 @@ repositories {
 }
 
 dependencies {
-  api 'net.kyori:feature:1.0.0-SNAPSHOT'
-  api 'net.kyori:examination-api:1.0.0-SNAPSHOT'
+  api 'net.kyori:feature:1.0.0'
   api 'org.checkerframework:checker-qual:2.8.2'
   testImplementation 'com.google.guava:guava-testlib:28.0-jre'
   testImplementation 'com.google.truth:truth:0.45'

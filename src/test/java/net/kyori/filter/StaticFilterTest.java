@@ -59,18 +59,23 @@ class StaticFilterTest {
   }
 
   @Test
-  void testExaminableProperties() {
-    assertThat(Filters.allow().examinableProperties()).hasSize(1);
-    assertThat(Filters.abstain().examinableProperties()).hasSize(1);
-    assertThat(Filters.deny().examinableProperties()).hasSize(1);
-  }
-
-  @Test
   void testEquality() {
     new EqualsTester()
-      .addEqualityGroup(Filters.allow(), Filters.allow())
-      .addEqualityGroup(Filters.abstain(), Filters.abstain())
-      .addEqualityGroup(Filters.deny(), Filters.deny())
+      .addEqualityGroup(
+        Filters.allow(),
+        Filters.allow(),
+        Filters.always(FilterResponse.ALLOW)
+      )
+      .addEqualityGroup(
+        Filters.abstain(),
+        Filters.abstain(),
+        Filters.always(FilterResponse.ABSTAIN)
+      )
+      .addEqualityGroup(
+        Filters.deny(),
+        Filters.deny(),
+        Filters.always(FilterResponse.DENY)
+      )
       .testEquals();
   }
 }

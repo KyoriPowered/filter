@@ -26,9 +26,9 @@ package net.kyori.filter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import net.kyori.examination.Examinable;
-import net.kyori.examination.ExaminableProperty;
 import net.kyori.feature.Feature;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -36,28 +36,19 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 /**
  * An abstract implementation of a filter that determines its response from the responses of the children filters.
  */
-public abstract class MultiFilter implements Examinable, Filter {
+public abstract class MultiFilter implements Filter {
+  private static final Collector<Filter, ?, List<Filter>> COLLECTOR = Collectors.toCollection(ArrayList::new);
   protected final List<? extends Filter> filters;
 
-  protected MultiFilter(final @NonNull Iterable<? extends Filter> filters) {
-    this.filters = asList(filters);
-  }
-
-  // Create a copy as a list to prevent changing filters after creation.
-  private static @NonNull List<? extends Filter> asList(final @NonNull Iterable<? extends Filter> iterable) {
-    final List<Filter> list = new ArrayList<>();
-    iterable.forEach(list::add);
-    return list;
+  protected MultiFilter(final @NonNull Stream<? extends Filter> filters) {
+    this.filters = filters
+      .filter(filter -> !filter.equals(StaticFilter.ABSTAIN)) // remove any filters that always abstain
+      .collect(COLLECTOR);
   }
 
   @Override
   public @NonNull Stream<? extends Feature> dependencies() {
     return this.filters.stream();
-  }
-
-  @Override
-  public @NonNull Stream<? extends ExaminableProperty> examinableProperties() {
-    return Stream.of(ExaminableProperty.of("filters", this.filters));
   }
 
   @Override

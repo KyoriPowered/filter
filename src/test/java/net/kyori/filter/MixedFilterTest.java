@@ -23,31 +23,25 @@
  */
 package net.kyori.filter;
 
-import java.util.List;
-import java.util.stream.Stream;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.junit.jupiter.api.Test;
 
-/**
- * A filter that responds with {@link FilterResponse#ALLOW} if any of its children respond with {@link FilterResponse#ALLOW}.
- */
-public final class AnyFilter extends MultiFilter {
-  AnyFilter(final @NonNull Stream<? extends Filter> filters) {
-    super(filters);
-  }
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-  @Override
-  @SuppressWarnings("ForLoopReplaceableByForEach")
-  public @NonNull FilterResponse query(final @NonNull FilterQuery query) {
-    FilterResponse response = FilterResponse.ABSTAIN;
-    final List<? extends Filter> filters = this.filters;
-    for(int i = 0, size = filters.size(); i < size; i++) {
-      final FilterResponse reply = filters.get(i).query(query);
-      if(reply == FilterResponse.ALLOW) {
-        return FilterResponse.ALLOW;
-      } else if(reply == FilterResponse.DENY) {
-        response = FilterResponse.DENY;
-      }
-    }
-    return response;
+class MixedFilterTest {
+  @Test
+  void testMixed() {
+    final Filter f0 = Filters.all(
+      new TestFilter.Above(0),
+      Filters.not(
+        new TestFilter.Equals(5)
+      ),
+      new TestFilter.Below(10)
+    );
+    assertFalse(f0.allows(TestFilter.Query.of(0)));
+    assertTrue(f0.allows(TestFilter.Query.of(1)));
+    assertFalse(f0.allows(TestFilter.Query.of(5)));
+    assertTrue(f0.allows(TestFilter.Query.of(9)));
+    assertFalse(f0.allows(TestFilter.Query.of(10)));
   }
 }
