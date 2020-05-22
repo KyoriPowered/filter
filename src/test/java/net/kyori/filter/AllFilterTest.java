@@ -24,6 +24,8 @@
 package net.kyori.filter;
 
 import com.google.common.testing.EqualsTester;
+import java.util.Arrays;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth8.assertThat;
@@ -61,11 +63,13 @@ class AllFilterTest {
     new EqualsTester()
       .addEqualityGroup(
         Filters.all(f0, f1),
-        Filters.all(f0, f1)
+        Filters.all(Arrays.asList(f0, f1)),
+        Filters.all(Stream.of(f0, f1))
       )
       .addEqualityGroup(
         Filters.all(f1, f2),
-        Filters.all(f1, f2)
+        Filters.all(Arrays.asList(f1, f2)),
+        Filters.all(Stream.of(f1, f2))
       )
       .testEquals();
   }

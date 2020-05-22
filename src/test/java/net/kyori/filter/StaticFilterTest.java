@@ -63,16 +63,13 @@ class StaticFilterTest {
     new EqualsTester()
       .addEqualityGroup(
         Filters.allow(),
-        Filters.allow(),
         Filters.always(FilterResponse.ALLOW)
       )
       .addEqualityGroup(
         Filters.abstain(),
-        Filters.abstain(),
         Filters.always(FilterResponse.ABSTAIN)
       )
       .addEqualityGroup(
-        Filters.deny(),
         Filters.deny(),
         Filters.always(FilterResponse.DENY)
       )

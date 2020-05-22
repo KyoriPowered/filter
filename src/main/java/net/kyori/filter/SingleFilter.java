@@ -30,7 +30,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
- * An abstract implementation of a filter that determines its response from the response of the children filter.
+ * An abstract implementation of a filter that determines its response from the response of the child filter.
  */
 public abstract class SingleFilter implements Filter {
   protected final Filter filter;

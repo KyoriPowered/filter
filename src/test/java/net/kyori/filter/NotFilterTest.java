@@ -27,7 +27,7 @@ import com.google.common.testing.EqualsTester;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth8.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class NotFilterTest {
@@ -45,7 +45,8 @@ class NotFilterTest {
   void testNotNotIsOriginal() {
     final Filter f0 = new TestFilter.Equals(0);
     final Filter n0 = Filters.not(f0);
-    assertEquals(f0, Filters.not(n0));
+    final Filter n1 = Filters.not(n0);
+    assertSame(f0, n1);
   }
 
   @Test

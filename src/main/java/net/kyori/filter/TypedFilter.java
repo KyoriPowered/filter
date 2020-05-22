@@ -74,7 +74,7 @@ public interface TypedFilter<Q extends FilterQuery> extends Filter {
   interface Strong<Q extends FilterQuery> extends TypedFilter<Q> {
     @Override
     default @NonNull FilterResponse typedQuery(final @NonNull Q query) {
-      return FilterResponse.from(this.queryResponse(query));
+      return FilterResponse.fromBoolean(this.queryResponse(query));
     }
 
     /**

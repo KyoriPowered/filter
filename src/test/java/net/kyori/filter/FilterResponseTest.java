@@ -37,8 +37,8 @@ class FilterResponseTest {
   }
 
   @Test
-  void testFrom_boolean() {
-    assertEquals(FilterResponse.ALLOW, FilterResponse.from(true));
-    assertEquals(FilterResponse.DENY, FilterResponse.from(false));
+  void testFromBoolean() {
+    assertEquals(FilterResponse.ALLOW, FilterResponse.fromBoolean(true));
+    assertEquals(FilterResponse.DENY, FilterResponse.fromBoolean(false));
   }
 }

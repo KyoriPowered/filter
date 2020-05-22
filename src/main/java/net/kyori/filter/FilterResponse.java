@@ -61,7 +61,7 @@ public enum FilterResponse {
    * @param bool the boolean
    * @return the response
    */
-  public static @NonNull FilterResponse from(final boolean bool) {
+  public static @NonNull FilterResponse fromBoolean(final boolean bool) {
     return bool ? ALLOW : DENY;
   }
 }
