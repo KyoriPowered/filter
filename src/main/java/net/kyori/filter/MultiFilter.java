@@ -42,7 +42,7 @@ public abstract class MultiFilter implements Filter {
 
   protected MultiFilter(final @NonNull Stream<? extends Filter> filters) {
     this.filters = filters
-      .filter(filter -> !filter.equals(StaticFilter.ABSTAIN)) // remove any filters that always abstain
+      .filter(filter -> !StaticFilter.ABSTAIN.equals(filter)) // remove any filters that always abstain
       .collect(COLLECTOR);
   }
 
