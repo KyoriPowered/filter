@@ -105,6 +105,7 @@ public interface Filters {
   /**
    * Gets a filter that always responds with {@code response}.
    *
+   * @param response the response to always respond with
    * @return a filter
    */
   static @NonNull Filter always(final @NonNull FilterResponse response) {
