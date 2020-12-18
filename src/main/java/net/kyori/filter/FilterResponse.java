@@ -27,6 +27,8 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * A response from querying a {@link Filter}.
+ *
+ * @since 1.0.0
  */
 public enum FilterResponse {
   ALLOW {
@@ -52,6 +54,7 @@ public enum FilterResponse {
    * Gets the inverse response.
    *
    * @return the inverse response
+   * @since 1.0.0
    */
   public abstract @NonNull FilterResponse inverse();
 
@@ -60,6 +63,7 @@ public enum FilterResponse {
    *
    * @param bool the boolean
    * @return the response
+   * @since 1.0.0
    */
   public static @NonNull FilterResponse fromBoolean(final boolean bool) {
     return bool ? ALLOW : DENY;

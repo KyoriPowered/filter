@@ -28,6 +28,8 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * A filter that returns a static response.
+ *
+ * @since 1.0.0
  */
 public final class StaticFilter implements Filter {
   /**

@@ -25,6 +25,8 @@ package net.kyori.filter;
 
 /**
  * A filter query.
+ *
+ * @since 1.0.0
  */
 public interface FilterQuery {
 }

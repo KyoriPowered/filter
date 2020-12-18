@@ -31,6 +31,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * An abstract implementation of a filter that determines its response from the response of the child filter.
+ *
+ * @since 1.0.0
  */
 public abstract class SingleFilter implements Filter {
   protected final Filter filter;

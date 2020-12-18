@@ -31,6 +31,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
  * <p>It is highly preferred to implement {@link Weak} or {@link Strong} instead of {@code TypedFilter} directly.</p>
  *
  * @param <Q> the query type
+ * @since 1.0.0
  */
 public interface TypedFilter<Q extends FilterQuery> extends Filter {
   /**
@@ -38,6 +39,7 @@ public interface TypedFilter<Q extends FilterQuery> extends Filter {
    *
    * @param query the query
    * @return {@code true} if this filter accepts the query, {@code false} otherwise
+   * @since 1.0.0
    */
   boolean queryable(final @NonNull FilterQuery query);
 
@@ -55,6 +57,7 @@ public interface TypedFilter<Q extends FilterQuery> extends Filter {
    *
    * @param query the query
    * @return the response
+   * @since 1.0.0
    */
   @NonNull FilterResponse typedQuery(final @NonNull Q query);
 
@@ -62,6 +65,7 @@ public interface TypedFilter<Q extends FilterQuery> extends Filter {
    * A filter that may respond to queries of type {@code Q}.
    *
    * @param <Q> the query type
+   * @since 1.0.0
    */
   interface Weak<Q extends FilterQuery> extends TypedFilter<Q> {
   }
@@ -70,6 +74,7 @@ public interface TypedFilter<Q extends FilterQuery> extends Filter {
    * A filter that <b>always</b> responds to queries of type {@code Q}.
    *
    * @param <Q> the query type
+   * @since 1.0.0
    */
   interface Strong<Q extends FilterQuery> extends TypedFilter<Q> {
     @Override
@@ -82,6 +87,7 @@ public interface TypedFilter<Q extends FilterQuery> extends Filter {
      *
      * @param query the query
      * @return the response
+     * @since 1.0.0
      */
     boolean queryResponse(final @NonNull Q query);
   }

@@ -29,6 +29,8 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * A filter that responds with {@link FilterResponse#ALLOW} if all of its children also respond with {@link FilterResponse#ALLOW}.
+ *
+ * @since 1.0.0
  */
 public final class AllFilter extends MultiFilter {
   AllFilter(final @NonNull Stream<? extends Filter> filters) {

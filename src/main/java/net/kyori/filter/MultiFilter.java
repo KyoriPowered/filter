@@ -35,6 +35,8 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * An abstract implementation of a filter that determines its response from the responses of the children filters.
+ *
+ * @since 1.0.0
  */
 public abstract class MultiFilter implements Filter {
   private static final Collector<Filter, ?, List<Filter>> COLLECTOR = Collectors.toCollection(ArrayList::new);

@@ -28,6 +28,8 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * A filter.
+ *
+ * @since 1.0.0
  */
 public interface Filter extends Feature {
   /**
@@ -35,6 +37,7 @@ public interface Filter extends Feature {
    *
    * @param query the query
    * @return the response
+   * @since 1.0.0
    */
   @NonNull FilterResponse query(final @NonNull FilterQuery query);
 
@@ -43,6 +46,7 @@ public interface Filter extends Feature {
    *
    * @param query the query
    * @return {@code true} if allowed, {@code false} otherwise
+   * @since 1.0.0
    */
   default boolean allows(final @NonNull FilterQuery query) {
     return this.query(query) == FilterResponse.ALLOW;
@@ -53,6 +57,7 @@ public interface Filter extends Feature {
    *
    * @param query the query
    * @return {@code true} if abstained, {@code false} otherwise
+   * @since 1.0.0
    */
   default boolean abstains(final @NonNull FilterQuery query) {
     return this.query(query) == FilterResponse.ABSTAIN;
@@ -63,6 +68,7 @@ public interface Filter extends Feature {
    *
    * @param query the query
    * @return {@code true} if denied, {@code false} otherwise
+   * @since 1.0.0
    */
   default boolean denies(final @NonNull FilterQuery query) {
     return this.query(query) == FilterResponse.DENY;

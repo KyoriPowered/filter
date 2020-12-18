@@ -29,6 +29,8 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * Filters.
+ *
+ * @since 1.0.0
  */
 public interface Filters {
   /**
@@ -36,6 +38,7 @@ public interface Filters {
    *
    * @param filters the filters
    * @return an all filter
+   * @since 1.0.0
    */
   static @NonNull Filter all(final @NonNull Filter... filters) {
     return all(Stream.of(filters));
@@ -46,6 +49,7 @@ public interface Filters {
    *
    * @param filters the filters
    * @return an all filter
+   * @since 1.0.0
    */
   static @NonNull Filter all(final @NonNull Iterable<? extends Filter> filters) {
     return all(StreamSupport.stream(filters.spliterator(), false));
@@ -56,6 +60,7 @@ public interface Filters {
    *
    * @param filters the filters
    * @return an all filter
+   * @since 1.0.0
    */
   static @NonNull Filter all(final @NonNull Stream<? extends Filter> filters) {
     return new AllFilter(filters);
@@ -66,6 +71,7 @@ public interface Filters {
    *
    * @param filters the filters
    * @return an any filter
+   * @since 1.0.0
    */
   static @NonNull Filter any(final @NonNull Filter... filters) {
     return any(Stream.of(filters));
@@ -76,6 +82,7 @@ public interface Filters {
    *
    * @param filters the filters
    * @return an any filter
+   * @since 1.0.0
    */
   static @NonNull Filter any(final @NonNull Iterable<? extends Filter> filters) {
     return any(StreamSupport.stream(filters.spliterator(), false));
@@ -86,6 +93,7 @@ public interface Filters {
    *
    * @param filters the filters
    * @return an any filter
+   * @since 1.0.0
    */
   static @NonNull Filter any(final @NonNull Stream<? extends Filter> filters) {
     return new AnyFilter(filters);
@@ -96,6 +104,7 @@ public interface Filters {
    *
    * @param filter a filter
    * @return a not filter
+   * @since 1.0.0
    */
   static @NonNull Filter not(final @NonNull Filter filter) {
     if(filter instanceof NotFilter) return ((NotFilter) filter).filter;
@@ -107,6 +116,7 @@ public interface Filters {
    *
    * @param response the response to always respond with
    * @return a filter
+   * @since 1.0.0
    */
   static @NonNull Filter always(final @NonNull FilterResponse response) {
     if(response == FilterResponse.ALLOW) {
@@ -124,6 +134,7 @@ public interface Filters {
    * Gets a filter that always responds with {@link FilterResponse#ALLOW}.
    *
    * @return a filter
+   * @since 1.0.0
    */
   static @NonNull Filter allow() {
     return StaticFilter.ALLOW;
@@ -133,6 +144,7 @@ public interface Filters {
    * Gets a filter that always responds with {@link FilterResponse#ABSTAIN}.
    *
    * @return a filter
+   * @since 1.0.0
    */
   static @NonNull Filter abstain() {
     return StaticFilter.ABSTAIN;
@@ -142,6 +154,7 @@ public interface Filters {
    * Gets a filter that always responds with {@link FilterResponse#DENY}.
    *
    * @return a filter
+   * @since 1.0.0
    */
   static @NonNull Filter deny() {
     return StaticFilter.DENY;
