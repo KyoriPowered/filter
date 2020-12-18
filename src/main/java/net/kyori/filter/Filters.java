@@ -23,8 +23,8 @@
  */
 package net.kyori.filter;
 
+import java.util.List;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
@@ -40,8 +40,8 @@ public interface Filters {
    * @return an all filter
    * @since 1.0.0
    */
-  static @NonNull Filter all(final @NonNull Filter... filters) {
-    return all(Stream.of(filters));
+  static @NonNull Filter all(final @NonNull Filter@NonNull... filters) {
+    return new AllFilter(filters);
   }
 
   /**
@@ -51,8 +51,8 @@ public interface Filters {
    * @return an all filter
    * @since 1.0.0
    */
-  static @NonNull Filter all(final @NonNull Iterable<? extends Filter> filters) {
-    return all(StreamSupport.stream(filters.spliterator(), false));
+  static @NonNull Filter all(final @NonNull List<? extends Filter> filters) {
+    return new AllFilter(filters);
   }
 
   /**
@@ -73,8 +73,8 @@ public interface Filters {
    * @return an any filter
    * @since 1.0.0
    */
-  static @NonNull Filter any(final @NonNull Filter... filters) {
-    return any(Stream.of(filters));
+  static @NonNull Filter any(final @NonNull Filter@NonNull... filters) {
+    return new AnyFilter(filters);
   }
 
   /**
@@ -84,8 +84,8 @@ public interface Filters {
    * @return an any filter
    * @since 1.0.0
    */
-  static @NonNull Filter any(final @NonNull Iterable<? extends Filter> filters) {
-    return any(StreamSupport.stream(filters.spliterator(), false));
+  static @NonNull Filter any(final @NonNull List<? extends Filter> filters) {
+    return new AnyFilter(filters);
   }
 
   /**
@@ -137,7 +137,7 @@ public interface Filters {
    * @since 1.0.0
    */
   static @NonNull Filter allow() {
-    return StaticFilter.ALLOW;
+    return ConstantFilter.ALLOW;
   }
 
   /**
@@ -147,7 +147,7 @@ public interface Filters {
    * @since 1.0.0
    */
   static @NonNull Filter abstain() {
-    return StaticFilter.ABSTAIN;
+    return ConstantFilter.ABSTAIN;
   }
 
   /**
@@ -157,6 +157,6 @@ public interface Filters {
    * @since 1.0.0
    */
   static @NonNull Filter deny() {
-    return StaticFilter.DENY;
+    return ConstantFilter.DENY;
   }
 }

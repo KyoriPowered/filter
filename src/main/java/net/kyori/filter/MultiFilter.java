@@ -26,7 +26,6 @@ package net.kyori.filter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import net.kyori.feature.Feature;
@@ -39,13 +38,36 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * @since 1.0.0
  */
 public abstract class MultiFilter implements Filter {
-  private static final Collector<Filter, ?, List<Filter>> COLLECTOR = Collectors.toCollection(ArrayList::new);
-  protected final List<? extends Filter> filters;
+  protected final List<Filter> filters;
+
+  protected MultiFilter(final @NonNull Filter@NonNull... filters) {
+    this.filters = new ArrayList<>(filters.length);
+    for(int i = 0, length = filters.length; i < length; i++) {
+      final Filter filter = filters[i];
+      if(filter(filter)) {
+        this.filters.add(filter);
+      }
+    }
+  }
+
+  protected MultiFilter(final @NonNull List<? extends Filter> filters) {
+    this.filters = new ArrayList<>(filters.size());
+    for(int i = 0, size = filters.size(); i < size; i++) {
+      final Filter filter = filters.get(i);
+      if(filter(filter)) {
+        this.filters.add(filter);
+      }
+    }
+  }
 
   protected MultiFilter(final @NonNull Stream<? extends Filter> filters) {
     this.filters = filters
-      .filter(filter -> !StaticFilter.ABSTAIN.equals(filter)) // remove any filters that always abstain
-      .collect(COLLECTOR);
+      .filter(MultiFilter::filter)
+      .collect(Collectors.toCollection(ArrayList::new));
+  }
+
+  private static boolean filter(final Filter filter) {
+    return !filter.equals(ConstantFilter.ABSTAIN); // remove any filters that always abstain
   }
 
   @Override
@@ -61,13 +83,13 @@ public abstract class MultiFilter implements Filter {
   @Override
   public boolean equals(final @Nullable Object other) {
     if(this == other) return true;
-    if(!(other instanceof MultiFilter)) return false;
+    if(other == null || this.getClass() != other.getClass()) return false;
     final MultiFilter that = (MultiFilter) other;
-    return Objects.equals(this.filters, that.filters);
+    return this.filters.equals(that.filters);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.filters);
+    return this.filters.hashCode();
   }
 }

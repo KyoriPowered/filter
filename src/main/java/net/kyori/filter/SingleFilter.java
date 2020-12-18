@@ -54,13 +54,13 @@ public abstract class SingleFilter implements Filter {
   @Override
   public boolean equals(final @Nullable Object other) {
     if(this == other) return true;
-    if(!(other instanceof SingleFilter)) return false;
+    if(other == null || this.getClass() != other.getClass()) return false;
     final SingleFilter that = (SingleFilter) other;
-    return Objects.equals(this.filter, that.filter);
+    return this.filter.equals(that.filter);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.filter);
+    return this.filter.hashCode();
   }
 }

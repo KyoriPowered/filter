@@ -27,27 +27,37 @@ import java.util.Objects;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
- * A filter that returns a static response.
+ * A filter that always returns the same response.
  *
  * @since 1.0.0
  */
-public final class StaticFilter implements Filter {
+public final class ConstantFilter implements Filter {
   /**
    * A filter that always returns with {@link FilterResponse#ALLOW}.
    */
-  static final StaticFilter ALLOW = new StaticFilter(FilterResponse.ALLOW);
+  static final ConstantFilter ALLOW = new ConstantFilter(FilterResponse.ALLOW);
   /**
    * A filter that always returns with {@link FilterResponse#ABSTAIN}.
    */
-  static final StaticFilter ABSTAIN = new StaticFilter(FilterResponse.ABSTAIN);
+  static final ConstantFilter ABSTAIN = new ConstantFilter(FilterResponse.ABSTAIN);
   /**
    * A filter that always returns with {@link FilterResponse#DENY}.
    */
-  static final StaticFilter DENY = new StaticFilter(FilterResponse.DENY);
+  static final ConstantFilter DENY = new ConstantFilter(FilterResponse.DENY);
   private final FilterResponse response;
 
-  private StaticFilter(final @NonNull FilterResponse response) {
+  private ConstantFilter(final @NonNull FilterResponse response) {
     this.response = response;
+  }
+
+  /**
+   * Gets the response.
+   *
+   * @return the response
+   * @since 1.0.0
+   */
+  public @NonNull FilterResponse response() {
+    return this.response;
   }
 
   @Override
@@ -57,14 +67,14 @@ public final class StaticFilter implements Filter {
 
   @Override
   public @NonNull String toString() {
-    return "StaticFilter{response=" + this.response + '}';
+    return this.getClass().getSimpleName() + "{response=" + this.response + '}';
   }
 
   @Override
   public boolean equals(final Object other) {
     if(this == other) return true;
     if(other == null || this.getClass() != other.getClass()) return false;
-    final StaticFilter that = (StaticFilter) other;
+    final ConstantFilter that = (ConstantFilter) other;
     return Objects.equals(this.response, that.response);
   }
 

@@ -40,7 +40,7 @@ public enum FilterResponse {
   ABSTAIN {
     @Override
     public @NonNull FilterResponse inverse() {
-      return ABSTAIN;
+      return ABSTAIN; // there is no inverse, return the same
     }
   },
   DENY {
@@ -53,13 +53,15 @@ public enum FilterResponse {
   /**
    * Gets the inverse response.
    *
+   * <p>The same response will be returned if no inverse response is available.</p>
+   *
    * @return the inverse response
    * @since 1.0.0
    */
   public abstract @NonNull FilterResponse inverse();
 
   /**
-   * Gets a response from a boolean.
+   * Converts a {@code boolean} into a response.
    *
    * @param bool the boolean
    * @return the response

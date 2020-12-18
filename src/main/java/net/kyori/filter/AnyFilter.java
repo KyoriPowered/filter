@@ -33,6 +33,14 @@ import org.checkerframework.checker.nullness.qual.NonNull;
  * @since 1.0.0
  */
 public final class AnyFilter extends MultiFilter {
+  AnyFilter(final @NonNull Filter@NonNull... filters) {
+    super(filters);
+  }
+
+  AnyFilter(final @NonNull List<? extends Filter> filters) {
+    super(filters);
+  }
+
   AnyFilter(final @NonNull Stream<? extends Filter> filters) {
     super(filters);
   }
@@ -41,7 +49,7 @@ public final class AnyFilter extends MultiFilter {
   @SuppressWarnings("ForLoopReplaceableByForEach")
   public @NonNull FilterResponse query(final @NonNull FilterQuery query) {
     FilterResponse response = FilterResponse.ABSTAIN;
-    final List<? extends Filter> filters = this.filters;
+    final List<Filter> filters = this.filters;
     for(int i = 0, size = filters.size(); i < size; i++) {
       final FilterResponse reply = filters.get(i).query(query);
       if(reply == FilterResponse.ALLOW) {

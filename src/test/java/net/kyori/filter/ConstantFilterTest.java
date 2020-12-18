@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 import static com.google.common.truth.Truth8.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class StaticFilterTest {
+class ConstantFilterTest {
   @Test
   void testQuery_allow() {
     for(int i = 0; i < 10; i++) {
